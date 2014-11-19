@@ -41,13 +41,12 @@ WGET := wget
 
 all:
 
-install: installExternals installKettle
+install: installKettle
 
 downloadKettle:
 	##### Download Kettle #####
-	# Download Kettle from: $(KETTLE_DOWNLOAD_PATH)
-	@$(TEST) -f $(ETL_KETTLE_PACKAGE_FILE) \
-		|| $(WGET) -O $(ETL_KETTLE_PACKAGE_FILE) $(ETL_KETTLE_DOWNLOAD_PATH) 2>&1
+	# Download Kettle from: $(ETL_KETTLE_DOWNLOAD_PATH)
+	$(WGET) -O $(ETL_KETTLE_PACKAGE_FILE) $(ETL_KETTLE_DOWNLOAD_PATH) 2>&1
 
 installKettle:
 	@$(TEST) -f $(ETL_KETTLE_PACKAGE_FILE) || $(MAKE) downloadKettle
@@ -63,7 +62,7 @@ installKettle:
 
 uninstall:
 	##### Uninstall Kettle #####
-	$(RM) -rf $(ETL_KETTLE_APPLICATION_DIR)
+	@$(RM) -rf $(ETL_KETTLE_APPLICATION_DIR)
 
 clean:
 	##### Cleanup Kettle installation #####

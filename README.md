@@ -54,7 +54,8 @@ The general logging file.
 If it is empty logging will be disabled.
 
 #### ETL_KETTLE_MEMORY_MAX
-    Maximal memory usage for the kettle application.
+
+Maximal memory usage for the kettle application.
 
 #### NODESCHNAPS_PATH
 
