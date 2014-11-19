@@ -1,0 +1,11 @@
+The example project outside of the library/ folder is under the The MIT License.
+See: license/etl/LICENSE
+
+Folders:
+
+library/etl:
+    License: Apache License Version 2.0
+    See: library/etl/LICENSE
+
+library/etl/library/js:
+    License: Is package specific please look in the packages.

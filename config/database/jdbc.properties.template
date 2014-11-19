@@ -1,0 +1,5 @@
+Example/type=javax.sql.DataSource
+Example/driver=com.mysql.jdbc.Driver
+Example/url=jdbc:mysql://${database.connection.Example.host}:${database.connection.Example.port}/${database.connection.Example.database}?${database.attribute.defaults.mysql}
+Example/user=${database.connection.Example.user}
+Example/password=${database.connection.Example.password}

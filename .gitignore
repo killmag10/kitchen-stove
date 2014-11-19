@@ -1,0 +1,11 @@
+/config/application.conf
+/config/application.conf.development
+/config/database/jdbc/jdbc.properties
+/config/kettle/.kettle/.spoonrc
+/config/kettle/.kettle/kettle.properties
+
+/library/etl/application/*
+
+/temp/*
+
+/download/*

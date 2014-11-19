@@ -1,0 +1,8 @@
+# Database Config
+database.attribute.defaults.mysql = useCursorFetch=true&defaultFetchSize=500&interactiveClient=true&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8
+
+database.connection.Example.host = ???
+database.connection.Example.port = 3306
+database.connection.Example.database = ???
+database.connection.Example.user = ???
+database.connection.Example.password = ???
