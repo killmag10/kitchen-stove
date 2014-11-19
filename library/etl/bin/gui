@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Get the base dir.
+BASE_DIR=`printf '%s' "$BASH_SOURCE" | sed 's#/\?[^/]*$##' | sed 's#^./##'`;
+if [[ ! "$BASE_DIR" =~ ^/ ]]; then
+    BASE_DIR=`printf '%s' "$PWD/$BASE_DIR" | sed 's#/\.\?$##'`;
+fi
+
+# Load the environment.
+. "$BASE_DIR/include/environment.sh"
+
+# Load the gui.
+cd "$ETL_APPLICATION_KETTLE_DIR/"
+./spoon.sh

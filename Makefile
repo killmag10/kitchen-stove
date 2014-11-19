@@ -13,16 +13,13 @@ CONFIG_JDBC_FILE := $(CONFIG_DIR)/database/jdbc/jdbc.properties
 DOWNLOAD_DIR := download
 TEMP_DIR := temp
 
-TOOL_REPLACER := $(LIB_ETL_DIR)/library/sh/replacer
-
-EXTERNAL_DEPLOYMENT_URL:= ssh://git@git.dietrich-hosting.de/library/deployment
-EXTERNAL_DEPLOYMENT_PATH:= 0.1.0:library
+TOOL_REPLACER := $(LIB_ETL_DIR)/tool/replacer
 
 ifeq ($(APPLICATION_ENV),)
 	APPLICATION_ENV=development
 endif
 
-.PHONY: all clean configure uninstall install installOnly
+.PHONY: all configure install uninstall clean
 
 # External targets
 all:
@@ -37,6 +34,10 @@ install:
 	##### Install #####
 	@$(MAKE) -C $(LIB_ETL_DIR) install
 	@$(MAKE) configure
+
+uninstall:
+	##### Uninstall #####
+	@$(MAKE) -C $(LIB_ETL_DIR) uninstall
 
 configure:
 	##### Configure #####
@@ -65,10 +66,6 @@ configure:
 		$(CONFIG_DIR)/application.conf \
 		$(CONFIG_DIR)/database/jdbc.properties.template \
 		$(CONFIG_JDBC_FILE)
-
-uninstall:
-	##### Uninstall #####
-	@$(MAKE) -C $(LIB_ETL_DIR) uninstall
 
 clean:
 	##### Cleanup #####

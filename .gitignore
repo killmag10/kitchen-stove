@@ -4,8 +4,6 @@
 /config/kettle/.kettle/.spoonrc
 /config/kettle/.kettle/kettle.properties
 
-/library/etl/application/*
-
 /temp/*
 
 /download/*

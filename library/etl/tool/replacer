@@ -1,0 +1,41 @@
+#!/bin/bash
+
+##
+# Replace variables in a file.
+#
+# $1    string      configuration file to read
+# $2    string      template file to read
+# $3    string      generated output file to write
+
+if [ ! -f "$1" ]; then
+    printf 'Configuration file "%s" not found!\n' "$1"
+    exit 1;
+fi
+
+if [ ! -f "$2" ]; then
+    printf 'Template file "%s" not found!\n' "$2"
+    exit 1;
+fi
+
+if [ -z "$3" ]; then
+    printf 'Generated output file path not set!\n'
+    exit 1;
+fi
+
+contentConfig="`cat "$1" | grep -v '^[[:space:]]*#' | grep -v '^[[:space:]]*$'`"
+contentTemplate="`cat "$2"`"
+contentOutput="$contentTemplate"
+configParseRegex='s/[[:space:]]*$//;s/^\([a-zA-Z][a-zA-Z0-9_.]*\)[[:space:]]*=[[:space:]]*\(.*\)/%s/'
+configParseRegexKey="`printf "$configParseRegex" "\1"`"
+configParseRegexValue="`printf "$configParseRegex" "\2"`"
+
+IFS=$'\n';
+for configLine in $contentConfig; do
+    configKey="`printf '%s' "$configLine" | sed "$configParseRegexKey"`"
+    configValue="`printf '%s' "$configLine" | sed "$configParseRegexValue"`"
+    [ -z "$configKey" ] && continue
+    configKey='${'"$configKey"'}';
+    contentOutput="${contentOutput//${configKey}/${configValue}}"
+done
+
+printf '%s\n' "$contentOutput" > "$3"

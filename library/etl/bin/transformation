@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Get the base dir path.
+BASE_DIR=`printf '%s' "$BASH_SOURCE" | sed 's#/\?[^/]*$##' | sed 's#^./##'`;
+if [[ ! "$BASE_DIR" =~ ^/ ]]; then
+    BASE_DIR=`printf '%s' "$PWD/$BASE_DIR" | sed 's#/\.\?$##'`;
+fi
+. "$BASE_DIR/include/environment.sh"
+
+options=''
+optionsLong='type:,logLevel:'
+res=`getopt -o "$options" -l "$optionsLong" -- "$@"` || exit 1;
+eval 'set -- '"$res"
+
+# Define options vars.
+optionType=''
+optionLogLevel='Basic'
+
+# Read options.
+param="$1"
+while shift; do
+case "$param" in
+    --type)
+        eval 'optionType=-'"$1";
+        shift
+        ;;
+    --logLevel)
+        eval 'optionLogLevel='"$1";
+        shift
+        ;;
+    --)
+        break;
+        ;;
+esac
+param="$1"
+done
+
+# Get dir and element
+dir="`dirname "$1"`";
+element="`basename "$1"`";
+shift 1
+
+# Get Spoon params
+spoonParams=()
+param=$1
+i=0
+while shift; do
+    eval "spoonParams[$i]=\"-param:${param}\"";
+    param=$1
+    ((i++))
+done
+
+ETL_startKettle ./pan.sh -dir="$dir" -trans "$element" -level="$optionLogLevel" "${spoonParams[@]}"
+exit $?
