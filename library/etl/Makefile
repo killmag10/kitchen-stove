@@ -7,14 +7,11 @@ ETL_LIB_PATCH_DIR_KETTLE := $(ETL_LIB_PATCH_DIR)/application/pentaho-kettle
 ETL_KETTLE_APPLICATION_DIR := $(ETL_LIB_APPLICATION_DIR)/pentaho-kettle
 
 # Set default package download path.
-ifeq ($(ETL_KETTLE_DOWNLOAD_PATH),)
-	ETL_KETTLE_DOWNLOAD_PATH:= http://files.dietrich-hosting.de/public/pentaho/kettle/pdi-ce-5.2.0.0-209.tar.gz
-endif
+ETL_KETTLE_DOWNLOAD_PATH?= http://files.dietrich-hosting.de/public/pentaho/kettle/pdi-ce-5.2.0.0-209.tar.gz
 
 # Set default package file path.
-ifeq ($(ETL_KETTLE_PACKAGE_FILE),)
-	ETL_KETTLE_PACKAGE_FILE := $(ETL_LIB_APPLICATION_DIR)/pentaho-kettle.download.tar.gz
-endif
+ETL_KETTLE_PACKAGE_FILE?= $(ETL_LIB_APPLICATION_DIR)/pentaho-kettle.download.tar.gz
+
 
 # Commands
 CP := cp

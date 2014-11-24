@@ -1,5 +1,7 @@
+MAKEFLAGS:= --warn-undefined-variables --no-print-directory $(MAKEFLAGS)
+
 # Commands
-MAKE := make --no-print-directory
+MAKE := make
 MKDIR := mkdir
 TAR := tar
 GIT := git
@@ -7,6 +9,7 @@ RM := rm
 TEST := test
 CP := cp
 WGET := wget
+CD := cd
 
 # Downloads
 # Mysql
@@ -25,9 +28,8 @@ TEMP_DIR := temp
 
 TOOL_REPLACER := $(LIB_ETL_DIR)/tool/replacer
 
-ifeq ($(APPLICATION_ENV),)
-	APPLICATION_ENV=development
-endif
+# Defaults
+APPLICATION_ENV ?= development
 
 .PHONY: \
 	.installFolders \
@@ -91,7 +93,7 @@ uninstall:
 configure:
 	##### Configure #####
 	# Copy default application.conf.$(APPLICATION_ENV) if not exists.
-	@$(TEST) -f $(CONFIG_DIR)/kettle/.kettle/.spoonrc \
+	@$(TEST) -f $(CONFIG_DIR)/application.conf.$(APPLICATION_ENV) \
 		|| $(CP) \
 			$(CONFIG_DIR)/application.conf.$(APPLICATION_ENV).dist \
 			$(CONFIG_DIR)/application.conf.$(APPLICATION_ENV)
