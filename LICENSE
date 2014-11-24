@@ -4,7 +4,7 @@ See: license/etl/LICENSE
 Folders:
 
 library/etl:
-    License: Apache License Version 2.0
+    License: MIT
     See: library/etl/LICENSE
 
 library/etl/library/js:

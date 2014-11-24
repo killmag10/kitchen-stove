@@ -1,0 +1,53 @@
+{
+  "name": "kitchen-stove",
+  "description": "A bootstrap example and library for Pentaho Data-Integration (Kettle).",
+  "version": "0.1.0",
+  "private": false,
+  "author": {
+    "name": "Lars Dietrich",
+    "email": "lars@dietrich-hosting.de"
+  },
+  "license": "MIT",
+  "homepage": "http://killmag10.github.io/kitchen-stove",
+  "contributors": [
+    {
+      "name": "Lars Dietrich",
+      "email": "lars@dietrich-hosting.de"
+    }
+  ],
+  "main": "./loader.node.js",
+  "directories": {
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "install": "make install",
+    "preuninstall": "make uninstall",
+    "preupdate": "make uninstall",
+    "update": "make install",
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/killmag10/kitchen-stove"
+  },
+  "keywords": [
+    "bootstrap",
+    "Pentaho Data-Integration",
+    "Kettle",
+    "bootstrap",
+    "library",
+    "example"
+  ],
+  "bugs": {
+    "url": "https://github.com/killmag10/kitchen-stove/issues"
+  },
+  "maintainers": [
+    {
+      "name": "killmag10",
+      "email": "killmag10@dietrich-hosting.de"
+    }
+  ]
+}
