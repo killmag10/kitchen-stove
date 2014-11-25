@@ -10,6 +10,8 @@ TEST := test
 CP := cp
 WGET := wget
 CD := cd
+FALSE := false
+TRUE := true
 
 # Downloads
 # Mysql
@@ -19,6 +21,7 @@ PACKAGE_PATH_MYSQL_CONNECTOR = $(DOWNLOAD_DIR)/mysql-connector.tar.gz
 DOWNLOAD_URL_MONGO_DRIVER = http://files.dietrich-hosting.de/public/mongo/mongo-java-driver-2.12.4.jar
 PACKAGE_PATH_MONGO_DRIVER = $(DOWNLOAD_DIR)/mongo-java-driver.jar
 
+# Directories
 LIB_DIR := library
 LIB_ETL_DIR := $(LIB_DIR)/etl
 CONFIG_DIR := config
@@ -26,10 +29,15 @@ CONFIG_JDBC_FILE := $(CONFIG_DIR)/database/jdbc/jdbc.properties
 DOWNLOAD_DIR := download
 TEMP_DIR := temp
 
+# TOOLS
 TOOL_REPLACER := $(LIB_ETL_DIR)/tool/replacer
 
 # Defaults
 APPLICATION_ENV ?= development
+
+# Macros
+
+IS_INSTALLED = $(shell $(TEST) -d $(LIB_ETL_DIR)/application/pentaho-kettle && printf '1')
 
 .PHONY: \
 	.installFolders \
@@ -43,7 +51,9 @@ APPLICATION_ENV ?= development
 	clean
 
 .installFolders:
+	# Create temp directory.
 	@$(TEST) -d $(TEMP_DIR) || $(MKDIR) $(TEMP_DIR)
+	# Create download directory.
 	@$(TEST) -d $(DOWNLOAD_DIR) || $(MKDIR) $(DOWNLOAD_DIR)
 
 .downloadMysqlConnector:
@@ -76,15 +86,21 @@ all:
 	# install:		Downlaod and install the application.
 	# uninstall:	uninstall the application.
 	# configure:	Write the config files.
-	#
 	# clean:		Cleanup the temporary files.
 
 install:
 	##### Install #####
+ifeq ($(IS_INSTALLED),1)
+	# Already installed
+else
+	# Setup folders.
 	@$(MAKE) .installFolders
+	# Install etl library
 	@$(MAKE) -C $(LIB_ETL_DIR) install
+	# Patch kettle
 	@$(MAKE) .patchKettle
 	@$(MAKE) configure
+endif
 
 uninstall:
 	##### Uninstall #####
@@ -119,8 +135,10 @@ configure:
 		$(CONFIG_JDBC_FILE)
 
 clean:
-	##### Cleanup #####
 	@$(MAKE) -C $(LIB_ETL_DIR) clean
+	##### Cleanup #####
+	# Remove temp directory.
 	@$(RM) -r $(TEMP_DIR)
+	# Remove download directory.
 	@$(RM) -r $(DOWNLOAD_DIR)
 	@$(MAKE) .installFolders
