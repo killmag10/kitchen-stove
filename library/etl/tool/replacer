@@ -3,27 +3,26 @@
 ##
 # Replace variables in a file.
 #
-# $1    string      configuration file to read
-# $2    string      template file to read
-# $3    string      generated output file to write
+# $1    string      template file to read
+# $*    string      configuration files to read
 
-if [ ! -f "$1" ]; then
-    printf 'Configuration file "%s" not found!\n' "$1"
-    exit 1;
+templateFile="$1"
+shift
+if [ ! -e "$templateFile" ]; then
+        printf 'Template file "%s" not found!\n' "$templateFile"
+        exit 1;
 fi
 
-if [ ! -f "$2" ]; then
-    printf 'Template file "%s" not found!\n' "$2"
-    exit 1;
-fi
+configFiles=( "$@" )
+for file in "${configFiles[@]}"; do
+    if [ ! -e "$file" ]; then
+        printf 'Configuration file "%s" not found!\n' "$file"
+        exit 1;
+    fi
+done
 
-if [ -z "$3" ]; then
-    printf 'Generated output file path not set!\n'
-    exit 1;
-fi
-
-contentConfig="`cat "$1" | grep -v '^[[:space:]]*#' | grep -v '^[[:space:]]*$'`"
-contentTemplate="`cat "$2"`"
+contentConfig="`cat "${configFiles[@]}" | grep -v '^[[:space:]]*#' | grep -v '^[[:space:]]*$'`"
+contentTemplate="`cat "$templateFile"`"
 contentOutput="$contentTemplate"
 configParseRegex='s/[[:space:]]*$//;s/^\([a-zA-Z][a-zA-Z0-9_.]*\)[[:space:]]*=[[:space:]]*\(.*\)/%s/'
 configParseRegexKey="`printf "$configParseRegex" "\1"`"
@@ -38,4 +37,4 @@ for configLine in $contentConfig; do
     contentOutput="${contentOutput//${configKey}/${configValue}}"
 done
 
-printf '%s\n' "$contentOutput" > "$3"
+printf '%s\n' "$contentOutput"

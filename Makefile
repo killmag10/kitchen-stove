@@ -125,14 +125,14 @@ configure:
 		$(CONFIG_DIR)/application.conf
 	# Generate kettle.properties
 	@$(TOOL_REPLACER) \
-		$(CONFIG_DIR)/application.conf \
 		$(CONFIG_DIR)/kettle/.kettle/kettle.properties.template \
-		$(CONFIG_DIR)/kettle/.kettle/kettle.properties
+		$(CONFIG_DIR)/application.conf \
+		> $(CONFIG_DIR)/kettle/.kettle/kettle.properties
 	# Copy database config
 	@$(TOOL_REPLACER) \
-		$(CONFIG_DIR)/application.conf \
 		$(CONFIG_DIR)/database/jdbc.properties.template \
-		$(CONFIG_JDBC_FILE)
+		$(CONFIG_DIR)/application.conf \
+		> $(CONFIG_JDBC_FILE)
 
 clean:
 	@$(MAKE) -C $(LIB_ETL_DIR) clean
