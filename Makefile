@@ -124,7 +124,7 @@ configure:
 	@$(CP) $(CONFIG_DIR)/application.conf.$(APPLICATION_ENV) \
 		$(CONFIG_DIR)/application.conf
 	# Generate kettle.properties
-	@$(TOOL_REPLACER) \
+	@$(CAT) \
 		$(CONFIG_DIR)/kettle/.kettle/kettle.properties.template \
 		$(CONFIG_DIR)/application.conf \
 		> $(CONFIG_DIR)/kettle/.kettle/kettle.properties
