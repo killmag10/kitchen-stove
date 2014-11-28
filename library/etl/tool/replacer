@@ -21,20 +21,67 @@ for file in "${configFiles[@]}"; do
     fi
 done
 
-contentConfig="`cat "${configFiles[@]}" | grep -v '^[[:space:]]*#' | grep -v '^[[:space:]]*$'`"
-contentTemplate="`cat "$templateFile"`"
-contentOutput="$contentTemplate"
 configParseRegex='s/[[:space:]]*$//;s/^\([a-zA-Z][a-zA-Z0-9_.]*\)[[:space:]]*=[[:space:]]*\(.*\)/%s/'
 configParseRegexKey="`printf "$configParseRegex" "\1"`"
 configParseRegexValue="`printf "$configParseRegex" "\2"`"
 
+# Generate a key value mapping.
 IFS=$'\n';
-for configLine in $contentConfig; do
-    configKey="`printf '%s' "$configLine" | sed "$configParseRegexKey"`"
-    configValue="`printf '%s' "$configLine" | sed "$configParseRegexValue"`"
+declare -A configMap
+contentConfig="`cat "${configFiles[@]}" | grep -v '^[[:space:]]*\(#.*\)\?$'`"
+for lineConfig in $contentConfig; do
+    configKey="`printf '%s' "$lineConfig" | sed "$configParseRegexKey"`"
     [ -z "$configKey" ] && continue
-    configKey='${'"$configKey"'}';
-    contentOutput="${contentOutput//${configKey}/${configValue}}"
+    configMap["$configKey"]="`printf '%s' "$lineConfig" | sed "$configParseRegexValue"`"
 done
 
-printf '%s\n' "$contentOutput"
+# Replace the variables with their values.
+replace() {
+    local \
+        output \
+        inVariable \
+        variableName \
+        lineLength \
+        linePos
+
+    # Read every line from the template.
+    while read -r line; do
+        output=
+        inVariable=
+        variableName=
+        lineLength=${#line}
+
+        # Parse the line.
+        for ((linePos=0; linePos < lineLength; linePos++)); do
+            if [ -z "$inVariable" ]; then
+                # Search for variable begin.
+                if [ "${line:$linePos:2}" = '${' ]; then
+                    inVariable=1
+                    ((linePos++))
+                else
+                    output+="${line:$linePos:1}"
+                fi
+
+                continue;
+            fi
+
+            # Search for variable end and collect the variable name.
+            if [ "${line:$linePos:1}" = '}' ]; then
+                inVariable=
+                # Test if variable exists in mapping.
+                if [ "${configMap[$variableName]}" = "${configMap[$variableName]-1}" ]; then
+                    output+="${configMap[$variableName]}"
+                else
+                    printf "Can't find config key: %s\n" "$variableNameParam1" >&2
+                    exit 1
+                fi
+                variableName=
+            else
+                variableName+="${line:$linePos:1}"
+            fi
+        done
+        printf '%s\n' "$output"
+    done
+}
+
+cat "$templateFile" | replace
