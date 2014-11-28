@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Get the base dir path.
+BASE_DIR=`printf '%s' "$BASH_SOURCE" | sed 's#/\?[^/]*$##' | sed 's#^./##'`;
+if [[ ! "$BASE_DIR" =~ ^/ ]]; then
+    BASE_DIR=`printf '%s' "$PWD/$BASE_DIR" | sed 's#/\.\?$##'`;
+fi
+. "$BASE_DIR/include/environment.sh"
+
+for param in "${ETL_KETTLE_GLOBAL_PARAMS[@]}"; do
+    printf '%s\n' "$param"
+done
