@@ -1,11 +1,13 @@
-/config/application.conf
-/config/application.conf.development
-/config/database/jdbc/jdbc.properties
-/config/kettle/.kettle/.spoonrc
-/config/kettle/.kettle/kettle.properties
-/config/kettle/.kettle/xulSettings.properties
-/config/kettle/.kettle/shared.xml
-/config/kettle/.kettle/shared.xml.backup
+config/application.conf
+config/application.conf.development
+config/database/jdbc/jdbc.properties
+config/kettle/.kettle/.spoonrc
+config/kettle/.kettle/kettle.properties
+config/kettle/.kettle/xulSettings.properties
+config/kettle/.kettle/shared.xml
+config/kettle/.kettle/shared.xml.backup
+config/kettle/.kettle/.languageChoice
 
-/temp/*
-/download/*
+temp/*
+download/*
+log/*
