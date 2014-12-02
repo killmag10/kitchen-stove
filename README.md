@@ -65,4 +65,28 @@ Path to search for modules/files (Last must be the nodeschnaps lib folder).
 
 Path to the nodeschnaps loader. (nodeschnaps/loader.js)
 
+## Make
+
+### Variables
+
+If **DOWNLOAD_URL_\*** is not set than the default will be used. 
+
+If **PACKAGE_\*** exists download will be skipped. 
+
+
+| Name                          | Description                                  |
+| ----------------------------: | :------------------------------------------- |
+| DOWNLOAD_URL_MYSQL_CONNECTOR  | URL to mysql connector tar.gz package        |
+| PACKAGE_PATH_MYSQL_CONNECTOR  | Local path to mysql connector tar.gz package |
+| DOWNLOAD_URL_MONGO_DRIVER     | URL to mongo driver tar.gz package           |
+| PACKAGE_PATH_MONGO_DRIVER     | Local path to mongo driver tar.gz package    |
+| ETL_KETTLE_DOWNLOAD_PATH      | URL to Kettle tar.gz package                 |
+| ETL_KETTLE_PACKAGE_FILE       | Path to Kettle tar.gz package                |
+
+
+
+
+
+
+
 
