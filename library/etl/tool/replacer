@@ -72,7 +72,7 @@ replace() {
                 if [ "${configMap[$variableName]}" = "${configMap[$variableName]-1}" ]; then
                     output+="${configMap[$variableName]}"
                 else
-                    printf "Can't find config key: %s\n" "$variableNameParam1" >&2
+                    printf "Can't find config key: %s\n" "$variableName" >&2
                     exit 1
                 fi
                 variableName=
