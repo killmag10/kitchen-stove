@@ -13,17 +13,12 @@ res=`getopt -o "$options" -l "$optionsLong" -- "$@"` || exit 1;
 eval 'set -- '"$res"
 
 # Define options Vars.
-optionType=''
-optionLogLevel='Basic'
+optionLogLevel="$ETL_KETTLE_LOG_LEVEL"
 
 # Read options.
 param="$1"
 while shift; do
 case "$param" in
-    --type)
-        eval 'optionType=-'"$1";
-        shift
-        ;;
     --logLevel)
         eval 'optionLogLevel='"$1";
         shift

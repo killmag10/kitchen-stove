@@ -20,6 +20,7 @@ export NODESCHNAPS_LOADER_FILE
 
 # USE ETL_LOG_TYPES='NONE' for no logging
 [ -z "$ETL_LOG_TYPES" ] && ETL_LOG_TYPES='ERROR OUTPUT';
+[ -z "$ETL_KETTLE_LOG_LEVEL" ] && ETL_KETTLE_LOG_LEVEL='Basic';
 
 # List of required environment variables.
 declare -a REQUIRED_ENV_VARS;
@@ -33,6 +34,7 @@ REQUIRED_ENV_VARS=(
     'ETL_LOG_DIR'
     'ETL_LIB_APPLICATION_DIR'
     'ETL_LOG_TYPES'
+    'ETL_KETTLE_LOG_LEVEL'
     'NODESCHNAPS_PATH'
     'NODESCHNAPS_LOADER_FILE'
 )
