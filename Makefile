@@ -12,6 +12,8 @@ WGET := wget
 CD := cd
 FALSE := false
 TRUE := true
+CAT := cat
+PASTE := paste
 
 # Downloads
 # Mysql
@@ -124,7 +126,7 @@ configure:
 	@$(CP) $(CONFIG_DIR)/application.conf.$(APPLICATION_ENV) \
 		$(CONFIG_DIR)/application.conf
 	# Generate kettle.properties
-	@$(CAT) \
+	@$(PASTE) --serial --delimiters='\n' \
 		$(CONFIG_DIR)/kettle/.kettle/kettle.properties.template \
 		$(CONFIG_DIR)/application.conf \
 		> $(CONFIG_DIR)/kettle/.kettle/kettle.properties
