@@ -17,11 +17,11 @@ PASTE := paste
 
 # Downloads
 # Mysql
-DOWNLOAD_URL_MYSQL_CONNECTOR = 'http://files.dietrich-hosting.de/public/mysql/mysql-connector-java-5.1.34.tar.gz'
-PACKAGE_PATH_MYSQL_CONNECTOR = $(DOWNLOAD_DIR)/mysql-connector.tar.gz
+DOWNLOAD_URL_MYSQL_CONNECTOR ?= 'http://files.dietrich-hosting.de/public/mysql/mysql-connector-java-5.1.34.tar.gz'
+PACKAGE_PATH_MYSQL_CONNECTOR ?= $(DOWNLOAD_DIR)/mysql-connector.tar.gz
 # Mongo
-DOWNLOAD_URL_MONGO_DRIVER = http://files.dietrich-hosting.de/public/mongo/mongo-java-driver-2.12.4.jar
-PACKAGE_PATH_MONGO_DRIVER = $(DOWNLOAD_DIR)/mongo-java-driver.jar
+DOWNLOAD_URL_MONGO_DRIVER ?= http://files.dietrich-hosting.de/public/mongo/mongo-java-driver-2.12.4.jar
+PACKAGE_PATH_MONGO_DRIVER ?= $(DOWNLOAD_DIR)/mongo-java-driver.jar
 
 # Directories
 LIB_DIR := library
