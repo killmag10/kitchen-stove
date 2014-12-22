@@ -48,10 +48,9 @@ downloadKettle:
 installKettle:
 	@$(TEST) -f $(ETL_KETTLE_PACKAGE_FILE) || $(MAKE) downloadKettle
 	##### Install Kettle #####
-	# Check if installed.
-	@$(TEST) ! -d $(ETL_KETTLE_APPLICATION_DIR) || $(MAKE) uninstallKettle
 	# Create Kettle application directory.
-	@$(MKDIR) $(ETL_KETTLE_APPLICATION_DIR)
+	@$(TEST) -d $(ETL_KETTLE_APPLICATION_DIR) \
+		|| $(MKDIR) $(ETL_KETTLE_APPLICATION_DIR)
 	# Unpack Kettle.
 	@$(TAR) -xaf $(ETL_KETTLE_PACKAGE_FILE) -C $(ETL_KETTLE_APPLICATION_DIR) data-integration/
 	@$(MV) $(ETL_KETTLE_APPLICATION_DIR)/data-integration/* $(ETL_KETTLE_APPLICATION_DIR)/
