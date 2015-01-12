@@ -29,6 +29,7 @@ export ETL_KETTLE_MEMORY_MAX=1024
 # JavaScript configuration.
 export NODESCHNAPS_PATH="$ETL_BIN_INCLUDE_DIR/../../resource/javascript:$LIB_JAVASCRIPT_DIR/node_modules:$LIB_JAVASCRIPT_DIR/node_modules/nodeschnaps/lib"
 export NODESCHNAPS_LOADER_FILE="$LIB_JAVASCRIPT_DIR/node_modules/nodeschnaps/loader.js"
+export NODESCHNAPS_MODIFIER="fridge-freezer/lib/Spoon/Nodeschnaps"
 
 # Additional variables.
 #export ETL_ENV_VARS="
