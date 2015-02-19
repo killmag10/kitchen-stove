@@ -9,6 +9,15 @@ fi
 # Load the environment.
 . "$BASE_DIR/include/environment.sh"
 
+# KDE fix.
+ETL_ENV_VARS+="
+awt.useSystemAAFontSettings=on
+swing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
+"
+export GTK2_RC_FILES=""
+export GTK_RC_FILES=""
+export GTK_MODULES=""
+
 # Load the gui.
 "$ETL_LIB_DIR/bin/gui" "$@"
 exit $?
