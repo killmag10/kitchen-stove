@@ -12,6 +12,8 @@ ETL_BIN_INCLUDE_DIR="`readlink -f "$ETL_BIN_INCLUDE_DIR"`"
 ##### CONFIG #####
 # Repository configuration.
 export ETL_KETTLE_REPOSITORY_ID='Repository'
+export ETL_KETTLE_REPOSITORY_USER='admin'
+export ETL_KETTLE_REPOSITORY_PASSWORD='admin'
 
 # Path configuration.
 export ETL_CONFIG_DIR="$ETL_BIN_INCLUDE_DIR/../../config"
