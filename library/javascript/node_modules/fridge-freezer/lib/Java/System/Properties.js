@@ -31,4 +31,31 @@ Properties.getAsObject = function(regex)
     return result;
 }
 
+Properties.getAsObjectStructure = function(regex, separator)
+{
+    if (undefined === separator) separator = '.';
+
+    var list = Properties.getAsObject(regex);
+    var result = {};
+
+    for (var key in list) {
+        key.split(separator).reduce(
+            function(current, value, index, array) {
+                if (index < (array.length - 1)) {
+                    if (undefined === current[value]) {
+                        current[value] = {}
+                    }
+                } else {
+                    current[value] = list[key];
+                }
+
+                return current[value];
+            },
+            result
+        );
+    }
+
+    return result;
+}
+
 module.exports = Properties;
