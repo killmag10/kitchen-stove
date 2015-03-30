@@ -15,6 +15,9 @@ TRUE := true
 CAT := cat
 PASTE := paste
 
+# Configuration
+USE_JDBC_CONFIG_GENERATOR := 1
+
 # Downloads
 # Mysql
 DOWNLOAD_URL_MYSQL_CONNECTOR ?= 'http://files.dietrich-hosting.de/public/mysql/mysql-connector-java-5.0.8.tar.gz'
@@ -33,12 +36,12 @@ TEMP_DIR := temp
 
 # TOOLS
 TOOL_REPLACER := $(LIB_ETL_DIR)/tool/replacer
+TOOL_JDBC_FILE_GENERATOR := $(LIB_ETL_DIR)/tool/jdbcFileGenerator
 
 # Defaults
 APPLICATION_ENV ?= development
 
 # Macros
-
 IS_INSTALLED = $(shell $(TEST) -d $(LIB_ETL_DIR)/application/pentaho-kettle && printf '1')
 
 .PHONY: \
@@ -125,16 +128,24 @@ configure:
 	#	application.default.conf
 	@$(CP) $(CONFIG_DIR)/application.conf.$(APPLICATION_ENV) \
 		$(CONFIG_DIR)/application.conf
-	# Generate kettle.properties
+	# Generate kettle.properties.
 	@$(PASTE) --serial --delimiters='\n' \
 		$(CONFIG_DIR)/kettle/.kettle/kettle.properties.template \
 		$(CONFIG_DIR)/application.conf \
 		> $(CONFIG_DIR)/kettle/.kettle/kettle.properties
-	# Copy database config
+	# Generate jdbc database config:
+ifeq ($(USE_JDBC_CONFIG_GENERATOR),1)
+	#	With jdbc file generator.
+	@$(TOOL_JDBC_FILE_GENERATOR) \
+		< $(CONFIG_DIR)/application.conf \
+		> $(CONFIG_JDBC_FILE)
+else
+	#	With config replacer.
 	@$(TOOL_REPLACER) \
 		$(CONFIG_DIR)/database/jdbc.properties.template \
 		$(CONFIG_DIR)/application.conf \
 		> $(CONFIG_JDBC_FILE)
+endif
 
 clean:
 	@$(MAKE) -C $(LIB_ETL_DIR) clean

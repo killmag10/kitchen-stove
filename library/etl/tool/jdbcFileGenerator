@@ -1,0 +1,153 @@
+#!/bin/bash
+
+##
+# Authors:
+# - Lars Dietrich <lars.dietrich@trivago.com>
+#
+# License:
+#
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 trivago GmbH
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+##
+# Generate a jdbc file from the kitchen-stove application configuration.
+#
+# &0    string      configuration input
+# &1    string      jdbc configuration output
+# &2    string      warning/error output
+
+
+# read, filter and remove dublicates (on front)
+inputContent=`grep '^database\.' | sort -s -t ' ' -k 1,1 | tac | sort -s -t ' ' -k 1,1 -u`
+
+baseRegEx='^database\.connection\.'
+databaseKeys=`printf '%s' "$inputContent" | sed -n 's#'"$baseRegEx"'\([A-Za-z0-9]\+\)\.type\s*=.*$#\1#p'`
+databaseAttributeDefaults=`printf '%s' "$inputContent" | grep '^database\.attribute\.defaults\.'`
+
+##
+# Map the driver name to the jdbc driver name.
+#
+# $1    String      driver name
+getJavaDriver() {
+    local result
+    
+    case "$1" in
+        mysql)
+            result='com.mysql.jdbc.Driver'
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+
+    printf '%s' "$result"
+    return 0
+}
+
+##
+# Get the jdbc url back.
+#
+# $1    String      driver name
+# $2    String      host
+# $3    String      port
+# $4    String      database name
+# $5    String      attributes
+getJdbcUrl() {
+    local result
+    local host="$2"
+    local port="$3"
+    local database="$4"
+    local attributes="$5"
+
+    if [ -z "$attributes" ]; then
+        attributes=`printf '%s' "$databaseAttributeDefaults" | sed -n 's#^database\.attribute\.defaults\.mysql\s*=\s*\(.\+\)\s*$#\1#p'`
+    fi
+    
+    case "$1" in
+        mysql)
+            result="jdbc:mysql://${host}:${port}/${database}?${attributes}"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+
+    printf '%s' "$result"
+    return 0
+}
+
+##
+# Generate the jdbc configuration for a spacial database.
+#
+# $1    String      database key
+generateDatabaseConfig() {
+    local key="$1"
+
+    local \
+        attribute \
+        database \
+        databaseName \
+        driver \
+        host \
+        javaDriver \
+        password \
+        port \
+        type \
+        url \
+        username
+    
+    database=`printf '%s' "$inputContent" | grep ''"$baseRegEx""$key"'\.'`
+    type=`printf '%s' "$database" | sed -n 's#'"$baseRegEx""$key"'\.type\s*=\s*\(.*\)\s*$#\1#p'`
+    if [ 'sql' != "$type" ]; then
+        printf "Skip not supported type: %s\n" "$type" >&2
+        return 1
+    fi
+
+    driver=`printf '%s' "$database" | sed -n 's#'"$baseRegEx""$key"'\.driver\s*=\s*\(.\+\)\s*$#\1#p'`
+    javaDriver=`getJavaDriver "$driver"`
+    if [ "$?" != 0 ]; then
+        printf "No driver mapping found for: %s\n" "$driver" >&2
+        return 1
+    fi
+
+    host=`printf '%s' "$database" | sed -n 's#'"$baseRegEx""$key"'\.host\s*=\s*\(.\+\)\s*$#\1#p'`
+    port=`printf '%s' "$database" | sed -n 's#'"$baseRegEx""$key"'\.port\s*=\s*\(.\+\)\s*$#\1#p'`
+    databaseName=`printf '%s' "$database" | sed -n 's#'"$baseRegEx""$key"'\.database\s*=\s*\(.\+\)\s*$#\1#p'`
+    username=`printf '%s' "$database" | sed -n 's#'"$baseRegEx""$key"'\.user\s*=\s*\(.\+\)\s*$#\1#p'`
+    password=`printf '%s' "$database" | sed -n 's#'"$baseRegEx""$key"'\.password\s*=\s*\(.\+\)\s*$#\1#p'`
+    attribute=`printf '%s' "$database" | sed -n 's#'"$baseRegEx""$key"'\.attribute\s*=\s*\(.\+\)\s*$#\1#p'`
+
+    url="`getJdbcUrl "$driver" "$host" "$port" "$databaseName" "$attribute"`"
+
+    printf '%s/type=javax.sql.DataSource\n' "$key"
+    printf '%s/driver=%s\n' "$key" "$javaDriver"
+    printf '%s/url=%s\n' "$key" "$url"
+    printf '%s/user=%s\n' "$key" "$username"
+    printf '%s/password=%s\n' "$key" "$password"
+    printf '\n'
+}
+
+
+IFS=$'\n'
+for key in $databaseKeys; do
+    generateDatabaseConfig "$key"
+done
