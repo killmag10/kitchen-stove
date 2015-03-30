@@ -175,6 +175,7 @@ ETL_logKettle()
         [ "$key" = "$type" ] && loggingActive=1
     done
 
+    IFS=''
     if [ -n "$loggingActive" ] && [ -n "$logFile" ]; then
         local line
         ETL_filterSpoonLog \
