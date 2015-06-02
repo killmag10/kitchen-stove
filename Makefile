@@ -128,6 +128,11 @@ configure:
 	#	application.default.conf
 	@$(CP) $(CONFIG_DIR)/application.conf.$(APPLICATION_ENV) \
 		$(CONFIG_DIR)/application.conf
+	# Generate environment.generated.config.sh
+	@$(TOOL_REPLACER) \
+		$(CONFIG_DIR)/environment.config.sh \
+		$(CONFIG_DIR)/application.conf \
+		> $(CONFIG_DIR)/environment.generated.config.sh
 	# Generate kettle.properties.
 	@$(PASTE) --serial --delimiters='\n' \
 		$(CONFIG_DIR)/kettle/.kettle/kettle.properties.template \
@@ -155,3 +160,12 @@ clean:
 	# Remove download directory.
 	@$(RM) -r $(DOWNLOAD_DIR)
 	@$(MAKE) .installFolders
+
+start-gui: configure
+ifeq ($(IS_INSTALLED),1)
+	##### Start GUI #####
+	@./bin/gui
+else
+	# !!! NOT INSTALLED !!!
+	# Please run make install first.
+endif

@@ -1,3 +1,7 @@
+# The logging level (Basic, Detailed, Debug, Rowlevel, Error, Nothing)
+kettle.log.level = Basic
+kettle.memory.max = 2048
+
 # Database Config
 database.attribute.defaults.mysql = useCursorFetch=true&defaultFetchSize=500&interactiveClient=true&tinyInt1isBit=false&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8
 

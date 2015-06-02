@@ -11,9 +11,9 @@ ETL_BIN_INCLUDE_DIR="`readlink -f "$ETL_BIN_INCLUDE_DIR"`"
 
 ##### CONFIG #####
 # Repository configuration.
-export ETL_KETTLE_REPOSITORY_ID='Repository'
-export ETL_KETTLE_REPOSITORY_USER='admin'
-export ETL_KETTLE_REPOSITORY_PASSWORD='admin'
+export ETL_KETTLE_REPOSITORY_ID=''
+export ETL_KETTLE_REPOSITORY_USER=''
+export ETL_KETTLE_REPOSITORY_PASSWORD=''
 
 # Path configuration.
 export ETL_CONFIG_DIR="$ETL_BIN_INCLUDE_DIR/../../config"
@@ -34,6 +34,14 @@ export NODESCHNAPS_LOADER_FILE="$LIB_JAVASCRIPT_DIR/node_modules/nodeschnaps/loa
 export NODESCHNAPS_MODIFIER="fridge-freezer/lib/Spoon/Nodeschnaps"
 
 # Additional variables.
-#export ETL_ENV_VARS="
-#   A_VAR_KEY=a value
-#"
+export ETL_RESOURCE_DIR="$ETL_BIN_INCLUDE_DIR/../../resource"
+export ETL_SHARE_DIR="$ETL_RESOURCE_DIR/share"
+
+if [ -e "$ETL_CONFIG_DIR/environment.generated.config.sh" ]; then
+    . "$ETL_CONFIG_DIR/environment.generated.config.sh" || exit 1
+fi
+
+export ETL_ENV_VARS="
+ETL_RESOURCE_DIR=$ETL_RESOURCE_DIR
+ETL_SHARE_DIR=$ETL_SHARE_DIR
+"

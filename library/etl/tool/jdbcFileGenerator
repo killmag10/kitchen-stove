@@ -40,7 +40,7 @@
 inputContent=`grep '^database\.' | sort -s -t ' ' -k 1,1 | tac | sort -s -t ' ' -k 1,1 -u`
 
 baseRegEx='^database\.connection\.'
-databaseKeys=`printf '%s' "$inputContent" | sed -n 's#'"$baseRegEx"'\([A-Za-z0-9]\+\)\.type\s*=.*$#\1#p'`
+databaseKeys=`printf '%s' "$inputContent" | sed -n 's#'"$baseRegEx"'\([A-Za-z0-9_]\+\)\.type\s*=.*$#\1#p'`
 databaseAttributeDefaults=`printf '%s' "$inputContent" | grep '^database\.attribute\.defaults\.'`
 
 ##
@@ -49,7 +49,7 @@ databaseAttributeDefaults=`printf '%s' "$inputContent" | grep '^database\.attrib
 # $1    String      driver name
 getJavaDriver() {
     local result
-    
+
     case "$1" in
         mysql)
             result='com.mysql.jdbc.Driver'
@@ -81,7 +81,7 @@ getJdbcUrl() {
     if [ -z "$attributes" ]; then
         attributes=`printf '%s' "$databaseAttributeDefaults" | sed -n 's#^database\.attribute\.defaults\.mysql\s*=\s*\(.\+\)\s*$#\1#p'`
     fi
-    
+
     case "$1" in
         mysql)
             result="jdbc:mysql://${host}:${port}/${database}?${attributes}"
@@ -114,7 +114,7 @@ generateDatabaseConfig() {
         type \
         url \
         username
-    
+
     database=`printf '%s' "$inputContent" | grep ''"$baseRegEx""$key"'\.'`
     type=`printf '%s' "$database" | sed -n 's#'"$baseRegEx""$key"'\.type\s*=\s*\(.*\)\s*$#\1#p'`
     if [ 'sql' != "$type" ]; then
