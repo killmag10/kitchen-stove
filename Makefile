@@ -34,6 +34,8 @@ CONFIG_JDBC_FILE := $(CONFIG_DIR)/database/jdbc/jdbc.properties
 DOWNLOAD_DIR := download
 TEMP_DIR := temp
 
+JS_JAR_FILE = $(LIB_DIR)/javascript/node_modules/nodeschnaps/deps/rhino/js.jar
+
 # TOOLS
 TOOL_REPLACER := $(LIB_ETL_DIR)/tool/replacer
 TOOL_JDBC_FILE_GENERATOR := $(LIB_ETL_DIR)/tool/jdbcFileGenerator
@@ -83,7 +85,10 @@ IS_INSTALLED = $(shell $(TEST) -d $(LIB_ETL_DIR)/application/pentaho-kettle && p
 	# Install mongo driver.
 	@$(CP) $(PACKAGE_PATH_MONGO_DRIVER) \
 		$(LIB_ETL_DIR)/application/pentaho-kettle/lib/mongo-java-driver.jar
-
+	# Install rhino.
+	@$(RM) $(LIB_ETL_DIR)/application/pentaho-kettle/lib/js-*.jar
+	@$(CP) $(JS_JAR_FILE) \
+		$(LIB_ETL_DIR)/application/pentaho-kettle/lib/
 
 # External targets
 all:
