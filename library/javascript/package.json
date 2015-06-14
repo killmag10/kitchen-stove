@@ -8,10 +8,10 @@
     "buffer-browserify": "~0.2.2",
     "es5-shim": "^4.0.6",
     "es6-shim": "^0.21.1",
-    "fridge-freezer": "^0.3.2",
+    "fridge-freezer": "^0.4.0",
     "lodash-node": "^2.4.1",
     "moment": "^2.8.4",
-    "nodeschnaps": "^0.4.0",
+    "nodeschnaps": "^0.4.1",
     "qunitjs": "^1.15.0",
     "semver": "^3.0.1",
     "twix": "^0.5.1"

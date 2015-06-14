@@ -9,6 +9,8 @@
 /config/kettle/.kettle/shared.xml.backup
 /config/kettle/.kettle/.languageChoice
 
+/resource/repository/repository.log
+
 /temp/*
 /download/*
 /log/*

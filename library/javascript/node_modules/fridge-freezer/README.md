@@ -9,6 +9,8 @@ var module = require('fridge-freezer')('module/to/load');
 ```
 
 ## Modules
+* Database
+  * [Structure](doc/Database/Structure.md)
 * Http
   * [Client](doc/Http/Client.md)
 * Java
