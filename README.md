@@ -5,13 +5,16 @@ for Pentaho Data-Integration (Kettle).
 
 ## Features
 
-Support for [nodeschnaps](https://github.com/killmag10/nodeschnaps/)
-(node compatibility layer).
+Includes
+* [nodeschnaps](https://github.com/killmag10/nodeschnaps/) (node compatibility layer).
+* [fridge-freezer](https://github.com/killmag10/fridge-freezer) (A pentaho kettle javascript library for nodeschnaps.).
 
 ## Supported Platforms
 
 ### Kettle Versions:
-* 5.2.0 (Default)
+* 5.4.0 (Default)
+* 5.3.0
+* 5.2.0
 * 5.1.0
 
 ### Operation Systems:
