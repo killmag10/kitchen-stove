@@ -11,7 +11,7 @@
     "fridge-freezer": "^0.4.0",
     "lodash-node": "^2.4.1",
     "moment": "^2.8.4",
-    "nodeschnaps": "^0.4.1",
+    "nodeschnaps": "^0.5.0",
     "qunitjs": "^1.15.0",
     "semver": "^3.0.1",
     "twix": "^0.5.1"

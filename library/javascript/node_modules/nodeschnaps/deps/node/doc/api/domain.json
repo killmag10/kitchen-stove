@@ -223,7 +223,7 @@
               "textRaw": "domain.dispose()",
               "type": "method",
               "name": "dispose",
-              "desc": "<p>The dispose method destroys a domain, and makes a best effort attempt to\nclean up any and all IO that is associated with the domain.  Streams are\naborted, ended, closed, and/or destroyed.  Timers are cleared.\nExplicitly bound callbacks are no longer called.  Any error events that\nare raised as a result of this are ignored.\n\n</p>\n<p>The intention of calling <code>dispose</code> is generally to prevent cascading\nerrors when a critical part of the Domain context is found to be in an\nerror state.\n\n</p>\n<p>Once the domain is disposed the <code>dispose</code> event will emit.\n\n</p>\n<p>Note that IO might still be performed.  However, to the highest degree\npossible, once a domain is disposed, further errors from the emitters in\nthat set will be ignored.  So, even if some remaining actions are still\nin flight, Node.js will not communicate further about them.\n\n</p>\n",
+              "desc": "<pre><code>Stability: 0 - Deprecated.  Please recover from failed IO actions\nexplicitly via error event handlers set on the domain.</code></pre>\n<p>Once <code>dispose</code> has been called, the domain will no longer be used by callbacks\nbound into the domain via <code>run</code>, <code>bind</code>, or <code>intercept</code>, and a <code>dispose</code> event\nis emitted.\n\n</p>\n",
               "signatures": [
                 {
                   "params": []

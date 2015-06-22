@@ -56,20 +56,21 @@ static void connect_cb(uv_connect_t* req, int status) {
 }
 
 TEST_IMPL(shutdown_twice) {
-  struct sockaddr_in addr = uv_ip4_addr("127.0.0.1", TEST_PORT);
+  struct sockaddr_in addr;
   uv_loop_t* loop;
   int r;
   uv_tcp_t h;
 
   uv_connect_t connect_req;
 
+  ASSERT(0 == uv_ip4_addr("127.0.0.1", TEST_PORT, &addr));
   loop = uv_default_loop();
 
   r = uv_tcp_init(loop, &h);
 
   r = uv_tcp_connect(&connect_req,
                      &h,
-                     addr,
+                     (const struct sockaddr*) &addr,
                      connect_cb);
   ASSERT(r == 0);
 
