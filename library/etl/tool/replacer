@@ -30,8 +30,25 @@
 ##
 # Replace variables in a file.
 #
+# -i    Ignore if variable was not found in config files.
+#
 # $1    string      template file to read
 # $*    string      configuration files to read
+
+errorOnVariableNotFound=1
+
+while getopts "i" Option
+do
+    case $Option in
+        i)
+            errorOnVariableNotFound=
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+done
+shift $(($OPTIND - 1))
 
 templateFile="$1"
 shift
@@ -99,8 +116,12 @@ replace() {
                 if [ "${configMap[$variableName]}" = "${configMap[$variableName]-1}" ]; then
                     output+="${configMap[$variableName]}"
                 else
-                    printf "Can't find config key: %s\n" "$variableName" >&2
-                    exit 1
+                    if [ -n "$errorOnVariableNotFound" ]; then
+                        printf "Can't find config key: %s\n" "$variableName" >&2
+                        exit 1
+                    else
+                        output+='${'"${variableName}"'}';
+                    fi
                 fi
                 variableName=
             else
