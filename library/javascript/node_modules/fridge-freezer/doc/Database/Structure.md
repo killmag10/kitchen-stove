@@ -3,6 +3,27 @@
 ## Database/Structure
 Class for database versioning.
 
+### File Structure
+
+*Version* - is integer started by 1.
+
+VERSION.forward.sql:
+
+* Plain SQL to execute for the version.
+* Required: YES
+
+VERSION.backward.sql:
+
+* Plain SQL to rewind the version.
+* Required: NO
+* Currently **not implemented**.
+
+VERSION.description.txt:
+
+* Description text for the version.
+* Required: YES
+
+
 ### Properties
 
 * *Options* [Database/Structure/Options](Structure/Options.md)
@@ -29,6 +50,6 @@ Return: Nothing.
 
 #### close()
 
-Close all used resources. (Database connections) 
+Close all used resources. (Database connections)
 
 Return: Nothing.

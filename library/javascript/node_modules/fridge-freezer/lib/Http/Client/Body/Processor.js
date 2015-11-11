@@ -12,15 +12,15 @@ var ApacheMethodParams =
 var ApacheMultipartRequestEntity =
     org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 var ApacheFileRequestEntity =
-    org.apache.commons.httpclient.methods.FileRequestEntity
+    org.apache.commons.httpclient.methods.FileRequestEntity;
 var ApacheStringRequestEntity =
-    org.apache.commons.httpclient.methods.StringRequestEntity
+    org.apache.commons.httpclient.methods.StringRequestEntity;
 
 var JavaFile = java.io.File;
 var JavaByteArrayOutputStream = java.io.ByteArrayOutputStream;
 
 
-var Processor = {}
+var Processor = {};
 
 var getMultipartPart = function(body, name)
 {
@@ -44,13 +44,13 @@ var getMultipartPart = function(body, name)
             new JavaFile(body.toString()),
             body.contentType.toString(),
             body.charset.toString()
-        )
+        );
         entity.setTransferEncoding(body.transferEncoding.toString());
         return entity;
     }
 
     return null;
-}
+};
 
 var getEntity = function(body)
 {
@@ -95,11 +95,11 @@ var getEntity = function(body)
         return new ApacheFileRequestEntity(
             new java.io.File(body.toString()),
             body.contentType.toString()
-        )
+        );
     }
 
     return null;
-}
+};
 
 Processor.process = function(method, params)
 {
@@ -118,11 +118,10 @@ Processor.process = function(method, params)
     }
 
     method.setRequestBody(
-        httpClientParams.body.valueOf()
+        params.body.valueOf()
     );
 
     return;
-}
+};
 
 module.exports = Processor;
-
