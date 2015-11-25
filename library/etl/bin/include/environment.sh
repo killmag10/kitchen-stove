@@ -179,7 +179,7 @@ ETL_logKettle()
     if [ -n "$loggingActive" ] && [ -n "$logFile" ]; then
         local line
         ETL_filterSpoonLog \
-            | while read line; do
+            | while read -r line; do
                 printf 'PID(%s) %s %s: %s\n' \
                     "`date +'%Y-%m-%d %H:%M:%S'`" \
                     "$ETL_MAIN_PID" \
