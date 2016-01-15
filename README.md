@@ -12,13 +12,21 @@ Includes
 ## Supported Platforms
 
 ### Kettle Versions:
-* 5.4.0 (Default)
+* 6.0.1 (Default)
+* 5.4.0
 * 5.3.0
 * 5.2.0
 * 5.1.0
 
 ### Operation Systems:
 * Linux
+* BSD
+
+## Requirements:
+* Java >= 7
+* Make
+* Bash
+* NodeJS >= 12 (Only for Node Module installation)
 
 ## Installation
 
@@ -72,9 +80,9 @@ Path to the nodeschnaps loader. (nodeschnaps/loader.js)
 
 ### Variables
 
-If **DOWNLOAD_URL_\*** is not set than the default will be used. 
+If **DOWNLOAD_URL_\*** is not set than the default will be used.
 
-If **PACKAGE_\*** exists download will be skipped. 
+If **PACKAGE_\*** exists download will be skipped.
 
 
 | Name                          | Description                                  |
@@ -85,11 +93,3 @@ If **PACKAGE_\*** exists download will be skipped.
 | PACKAGE_PATH_MONGO_DRIVER     | Local path to mongo driver tar.gz package    |
 | ETL_KETTLE_DOWNLOAD_PATH      | URL to Kettle tar.gz package                 |
 | ETL_KETTLE_PACKAGE_FILE       | Path to Kettle tar.gz package                |
-
-
-
-
-
-
-
-
