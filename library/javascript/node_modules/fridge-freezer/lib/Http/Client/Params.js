@@ -25,8 +25,9 @@ Params.Methods = {
     "OPTIONS" : "OPTIONS",
     "HEAD" : "HEAD",
     "TRACE" : "TRACE",
-    "DELETE" : "DELETE"
-}
+    "DELETE" : "DELETE",
+    "PATCH" : "PATCH"
+};
 
 Params.prototype.url = null;
 Params.prototype.timeout = null;
@@ -41,4 +42,3 @@ Params.prototype.credentials = null;
 Params.prototype.proxy = null;
 
 module.exports = Params;
-

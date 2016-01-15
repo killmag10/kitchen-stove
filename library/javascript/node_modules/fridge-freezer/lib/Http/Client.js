@@ -25,6 +25,18 @@ var JavaLangByte = java.lang.Byte;
 var ClientBodyProcessor = require('./Client/Body/Processor.js');
 var ClientResult = require('./Client/Result.js');
 
+var ApacheMethodPatch = function(uri) {
+    return JavaAdapter(
+        ApacheMethodPut,
+        {
+            "getName" : function() {
+                return 'PATCH';
+            }
+        },
+        uri
+    );
+};
+
 var methods = {
     "GET" : ApacheMethodGet,
     "POST" : ApacheMethodPost,
@@ -32,8 +44,9 @@ var methods = {
     "OPTIONS" : ApacheMethodOptions,
     "HEAD" : ApacheMethodHead,
     "TRACE" : ApacheMethodTrace,
-    "DELETE" : ApacheMethodDelete
-}
+    "DELETE" : ApacheMethodDelete,
+    "PATCH" : ApacheMethodPatch
+};
 
 var Client = function()
 {
@@ -174,4 +187,3 @@ Client.prototype.request = function(params)
 }
 
 module.exports = Client;
-
