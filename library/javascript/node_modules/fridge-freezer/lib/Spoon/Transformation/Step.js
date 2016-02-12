@@ -2,7 +2,7 @@
 /*
  * Spacial actions for a spoon transformation step.
  */
-var Step = {}
+var Step = {};
 
 var executionPathCache = null;
 
@@ -26,6 +26,6 @@ Step.getExecutionPath = function()
     executionPathCache = executionPath.reverse();
 
     return executionPathCache;
-}
+};
 
 module.exports = Step;

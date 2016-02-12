@@ -75,4 +75,33 @@ describe('asn1.js DER decoder', function() {
       this.key('key').bool()
     );
   }, '30800101ff0000', { 'key': true });
+
+  test('should decode bmpstr', function() {
+    this.bmpstr();
+  }, '1e26004300650072007400690066006900630061' +
+     '0074006500540065006d0070006c006100740065', 'CertificateTemplate');
+
+  test('should decode bmpstr with cyrillic chars', function() {
+    this.bmpstr();
+  }, '1e0c041f04400438043204350442', 'Привет');
+
+  test('should properly decode objid with dots', function() {
+    this.objid({
+      '1.2.398.3.10.1.1.1.2.2': 'yes'
+    });
+  }, '060a2a830e030a0101010202', 'yes');
+
+  it('should decode encapsulated models', function() {
+    var B = asn1.define('B', function() {
+      this.seq().obj(
+        this.key('nested').int()
+      );
+    });
+    var A = asn1.define('A', function() {
+      this.octstr().contains(B);
+    });
+
+    var out = A.decode(new Buffer('04053003020105', 'hex'), 'der');
+    assert.equal(out.nested.toString(10), '5');
+  });
 });
