@@ -42,6 +42,9 @@ if [ -e "$ETL_CONFIG_DIR/environment.generated.config.sh" ]; then
 fi
 
 export ETL_ENV_VARS="
+user.timezone=UTC
+user.language=en
+user.region=US
 ETL_RESOURCE_DIR=$ETL_RESOURCE_DIR
 ETL_SHARE_DIR=$ETL_SHARE_DIR
 "
