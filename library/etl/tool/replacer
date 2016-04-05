@@ -66,17 +66,17 @@ for file in "${configFiles[@]}"; do
 done
 
 configParseRegex='s/[[:space:]]*$//;s/^\([a-zA-Z][a-zA-Z0-9_.]*\)[[:space:]]*=[[:space:]]*\(.*\)/%s/'
-configParseRegexKey="`printf "$configParseRegex" "\1"`"
-configParseRegexValue="`printf "$configParseRegex" "\2"`"
+configParseRegexCombined="`printf "$configParseRegex" "\1 \2"`"
 
 # Generate a key value mapping.
 IFS=$'\n';
 declare -A configMap
 contentConfig="`cat "${configFiles[@]}" | grep -v '^[[:space:]]*\(#.*\)\?$'`"
-for lineConfig in $contentConfig; do
-    configKey="`printf '%s' "$lineConfig" | sed "$configParseRegexKey"`"
+contentConfigParsed="`printf '%s' "$contentConfig" | sed "$configParseRegexCombined"`"
+for lineConfig in $contentConfigParsed; do
+    configKey="${lineConfig%% *}"
     [ -z "$configKey" ] && continue
-    configMap["$configKey"]="`printf '%s' "$lineConfig" | sed "$configParseRegexValue"`"
+    configMap["$configKey"]="${lineConfig#* }"
 done
 
 # Replace the variables with their values.
@@ -90,6 +90,12 @@ replace() {
 
     # Read every line from the template.
     while read -r line; do
+        if ! [[ "$line" =~ \$\{ ]]; then
+            # Skip if no variable is found.
+            printf '%s\n' "$line"
+            continue
+        fi
+
         output=
         inVariable=
         variableName=
