@@ -6,8 +6,10 @@ ETL_LIB_PATCH_DIR := patch
 ETL_LIB_PATCH_DIR_KETTLE := $(ETL_LIB_PATCH_DIR)/application/pentaho-kettle
 ETL_KETTLE_APPLICATION_DIR := $(ETL_LIB_APPLICATION_DIR)/pentaho-kettle
 
+VERBOSE?= 0
+
 # Set default package download path.
-ETL_KETTLE_DOWNLOAD_PATH?= http://files.dietrich-hosting.de/public/pentaho/kettle/pdi-ce-6.0.1.0-386.tar.gz
+ETL_KETTLE_DOWNLOAD_PATH?= http://files.dietrich-hosting.de/public/pentaho/kettle/pdi-ce-6.1.0.1-196.tar.gz
 
 # Set default package file path.
 ETL_KETTLE_PACKAGE_FILE?= $(ETL_LIB_APPLICATION_DIR)/pentaho-kettle.download.tar.gz
@@ -25,7 +27,12 @@ RSYNC := rsync
 TAR := tar
 TEST := test
 TR := tr
+
+ifneq ($(VERBOSE),0)
 WGET := wget
+else
+WGET := wget -q
+endif
 
 .PHONY: \
 	all \
@@ -41,9 +48,9 @@ all:
 install: installKettle
 
 downloadKettle:
-	##### Download Kettle #####
 	# Download Kettle from: $(ETL_KETTLE_DOWNLOAD_PATH)
-	$(WGET) -O $(ETL_KETTLE_PACKAGE_FILE) $(ETL_KETTLE_DOWNLOAD_PATH) 2>&1
+	# Download Kettle to: $(abspath $(ETL_KETTLE_PACKAGE_FILE))
+	@$(WGET) -O $(ETL_KETTLE_PACKAGE_FILE) $(ETL_KETTLE_DOWNLOAD_PATH) 2>&1
 
 installKettle:
 	@$(TEST) -f $(ETL_KETTLE_PACKAGE_FILE) || $(MAKE) downloadKettle
