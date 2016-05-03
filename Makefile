@@ -36,7 +36,9 @@ CONFIG_JDBC_FILE := $(CONFIG_DIR)/database/jdbc/jdbc.properties
 DOWNLOAD_DIR := download
 TEMP_DIR := temp
 
+# Files
 JS_JAR_FILE = $(LIB_DIR)/javascript/node_modules/nodeschnaps/deps/rhino/js.jar
+CONFIG_APPLICATION_GENERATED = $(CONFIG_DIR)/application.generated.conf
 
 # TOOLS
 TOOL_REPLACER := $(LIB_ETL_DIR)/tool/replacer
@@ -120,36 +122,36 @@ uninstall:
 
 configure:
 	##### Configure #####
-	# Copy default application.conf.$(APPLICATION_ENV) if not exists.
-	@$(TEST) -f $(CONFIG_DIR)/application.conf.$(APPLICATION_ENV) \
+	# Copy default application.conf if not exists.
+	@$(TEST) -f $(CONFIG_DIR)/application.conf \
 		|| $(CP) \
-			$(CONFIG_DIR)/application.conf.$(APPLICATION_ENV).dist \
-			$(CONFIG_DIR)/application.conf.$(APPLICATION_ENV)
+			$(CONFIG_DIR)/application.conf.dist \
+			$(CONFIG_DIR)/application.conf
 	# Copy default .spoonrc if not exists.
 	@$(TEST) -f $(CONFIG_DIR)/kettle/.kettle/.spoonrc \
 		|| $(CP) \
 			$(CONFIG_DIR)/kettle/.kettle/.spoonrc.default \
 			$(CONFIG_DIR)/kettle/.kettle/.spoonrc
-	# Concat config files:
-	#	application.conf.$(APPLICATION_ENV)
-	#	application.default.conf
-	@$(CP) $(CONFIG_DIR)/application.conf.$(APPLICATION_ENV) \
-		$(CONFIG_DIR)/application.conf
+	# Combine config files.
+	@$(PASTE) --serial --delimiters='\n' \
+		$(CONFIG_DIR)/application.default.conf \
+		$(CONFIG_DIR)/application.conf \
+		> $(CONFIG_APPLICATION_GENERATED)
 	# Generate environment.generated.config.sh
 	@$(TOOL_REPLACER) \
 		$(CONFIG_DIR)/environment.config.sh \
-		$(CONFIG_DIR)/application.conf \
+		$(CONFIG_APPLICATION_GENERATED) \
 		> $(CONFIG_DIR)/environment.generated.config.sh
 	# Generate kettle.properties.
 	@$(PASTE) --serial --delimiters='\n' \
 		$(CONFIG_DIR)/kettle/.kettle/kettle.properties.template \
-		$(CONFIG_DIR)/application.conf \
+		$(CONFIG_APPLICATION_GENERATED) \
 		> $(CONFIG_DIR)/kettle/.kettle/kettle.properties
 	# Generate jdbc database config:
 ifeq ($(USE_JDBC_CONFIG_GENERATOR),1)
 	#	With jdbc file generator.
 	@$(TOOL_JDBC_FILE_GENERATOR) \
-		< $(CONFIG_DIR)/application.conf \
+		< $(CONFIG_APPLICATION_GENERATED) \
 		> $(CONFIG_JDBC_FILE)
 else
 	#	With config replacer.

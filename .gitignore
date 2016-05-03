@@ -1,5 +1,5 @@
 /config/application.conf
-/config/application.conf.development
+/config/application.generated.conf
 /config/database/jdbc/jdbc.properties
 /config/environment.generated.config.sh
 /config/kettle/.kettle/.spoonrc

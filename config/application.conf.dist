@@ -1,0 +1,8 @@
+# Database Config
+database.connection.Example.type = sql
+database.connection.Example.driver = mysql
+database.connection.Example.host = localhost
+database.connection.Example.port = 3306
+database.connection.Example.database = test
+database.connection.Example.user = development
+database.connection.Example.password = development
