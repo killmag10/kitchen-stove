@@ -113,6 +113,7 @@ ETL_filterSpoonLogStrings=(
     'Unable to load Hadoop Configuration from'
     'RepositoriesMeta - Reading repositories XML file:'
     'Kitchen - Command Line Options'
+    'cfgbuilder - Warning'
 )
 
 ##
