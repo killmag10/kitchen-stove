@@ -1,5 +1,6 @@
 MAKEFLAGS:= --warn-undefined-variables --no-print-directory $(MAKEFLAGS)
 VERBOSE?= 0
+PROJECT_NAME:= kitchen-stove
 
 # Commands
 MAKE := make
@@ -43,12 +44,17 @@ CONFIG_JDBC_FILE := $(CONFIG_DIR)/database/jdbc/jdbc.properties
 DOWNLOAD_DIR := download
 TEMP_DIR := temp
 PATH_NODE_MODULES := $(LIB_DIR)/javascript/node_modules
+PATH_DOCS := docs
+RESOURCE_DIR := resource
+RESOURCE_JAVSCRIPT_DIR := $(RESOURCE_DIR)/javascript
+PACKAGE_DIR := dist/packages
 
 # Install/Uninstall node modules. Git ignore entry is needed.
 SETUP_NODE_MODULES := 0
 
 # Files
 JS_JAR_FILE = $(LIB_DIR)/javascript/node_modules/nodeschnaps/deps/rhino/js.jar
+CONFIG_APPLICATION = $(CONFIG_DIR)/application.conf
 CONFIG_APPLICATION_GENERATED = $(CONFIG_DIR)/application.generated.conf
 
 # TOOLS
@@ -60,6 +66,7 @@ APPLICATION_ENV ?= development
 
 # Macros
 IS_INSTALLED = $(shell $(TEST) -d $(LIB_ETL_DIR)/application/pentaho-kettle && printf '1')
+DOCS_EXISTS = $(shell $(TEST) -d $(PATH_DOCS)/html && printf '1')
 
 .PHONY: \
 	.install-folders \
@@ -156,14 +163,14 @@ configure: .configure-head .configure-generate-main .configure-kettle .configure
 
 .configure-generate-main:
 	# Copy default application.conf if not exists.
-	@$(TEST) -f $(CONFIG_DIR)/application.conf \
+	@$(TEST) -f $(CONFIG_APPLICATION) \
 		|| $(CP) \
-			$(CONFIG_DIR)/application.conf.dist \
-			$(CONFIG_DIR)/application.conf
+			$(CONFIG_APPLICATION).dist \
+			$(CONFIG_APPLICATION)
 	# Combine config files.
 	@$(PASTE) --serial --delimiters='\n' \
 		$(CONFIG_DIR)/application.default.conf \
-		$(CONFIG_DIR)/application.conf \
+		$(CONFIG_APPLICATION) \
 		> $(CONFIG_APPLICATION_GENERATED)
 	# Generate environment.generated.config.sh
 	@$(TOOL_REPLACER) \
@@ -194,7 +201,7 @@ else
 	#	With config replacer.
 	@$(TOOL_REPLACER) \
 		$(CONFIG_DIR)/database/jdbc.properties.template \
-		$(CONFIG_DIR)/application.conf \
+		$(CONFIG_APPLICATION) \
 		> $(CONFIG_JDBC_FILE)
 endif
 
@@ -205,6 +212,14 @@ clean: clean-dependencies
 	# Remove download directory.
 	@$(RM) -rf $(DOWNLOAD_DIR)
 	@$(MAKE) .install-folders
+
+distclean: clean
+	# Remove $(CONFIG_APPLICATION_GENERATED) file.
+	@$(TEST) ! -f $(CONFIG_APPLICATION_GENERATED) || $(RM) $(CONFIG_APPLICATION_GENERATED)
+	# Remove $(CONFIG_APPLICATION_GENERATED) file.
+	@$(TEST) ! -f $(CONFIG_APPLICATION) || $(RM) $(CONFIG_APPLICATION)
+	# Remove $(CONFIG_JDBC_FILE) file.
+	@$(TEST) ! -f $(CONFIG_JDBC_FILE) || $(RM) $(CONFIG_JDBC_FILE)
 
 clean-dependencies:
 	@$(MAKE) -C $(LIB_ETL_DIR) clean
@@ -217,3 +232,30 @@ else
 	# !!! NOT INSTALLED !!!
 	# Please run make install first.
 endif
+
+html: .cleanHtml
+	# Create html docs under docs/html/api
+	@$(PATH_NODE_MODULES)/.bin/jsdoc \
+		--configure jsdoc.json \
+		--template $(PATH_NODE_MODULES)/ink-docstrap/template \
+		--destination $(PATH_DOCS)/html/api \
+		--recurse \
+		$(RESOURCE_JAVSCRIPT_DIR)
+
+.cleanHtml:
+ifeq ($(DOCS_EXISTS),1)
+	# Remove html docs
+	@$(TEST) ! -d $(PATH_DOCS)/html || $(RM) -r $(PATH_DOCS)/html
+endif
+
+dist: \
+	VERSION ?= 0.0.0
+	packagePath = $(PACKAGE_DIR)/$(PROJECT_NAME)-$(VERSION).tar.gz
+dist: distclean
+	##### Build Package #####
+	# Create dir $(PACKAGE_DIR)
+	@$(TEST) -e $(PACKAGE_DIR) || $(MKDIR) -p $(PACKAGE_DIR)
+	# Create package $(packagePath)
+	@$(TAR) -czf $(packagePath) \
+		--exclude $(PACKAGE_DIR) \
+		./*

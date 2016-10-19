@@ -4,10 +4,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "async": "^2.0.1",
+    "async": "^2.1.2",
     "es5-shim": "^4.5.9",
     "es6-shim": "^0.35.1",
     "fridge-freezer": "^0.8.0",
+    "ink-docstrap": "^1.3.0",
+    "jsdoc": "^3.4.2",
     "lodash-node": "^3.10.2",
     "moment": "^2.8.4",
     "nodeschnaps": "^0.5.3",

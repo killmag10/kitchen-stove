@@ -1,0 +1,11 @@
+{
+    "templates": {
+        "systemName"            : "kitchen-stove javascript",
+        "includeDate"           : true,
+        "collapseSymbols"       : false,
+        "navType"               : "inline",
+        "linenums"              : true,
+        "syntaxTheme"           : "simplex",
+        "sort"                  : true
+    }
+}
