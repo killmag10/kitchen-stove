@@ -9,6 +9,8 @@ var module = require('fridge-freezer')('module/to/load');
 ```
 
 ## Modules
+* Data
+  * [Group](doc/Data/Group.md)
 * Database
   * Table
     * [Versioning](doc/Database/Table/Versioning.md)

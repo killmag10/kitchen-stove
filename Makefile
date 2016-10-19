@@ -44,6 +44,9 @@ DOWNLOAD_DIR := download
 TEMP_DIR := temp
 PATH_NODE_MODULES := $(LIB_DIR)/javascript/node_modules
 
+# Install/Uninstall node modules. Git ignore entry is needed.
+SETUP_NODE_MODULES := 0
+
 # Files
 JS_JAR_FILE = $(LIB_DIR)/javascript/node_modules/nodeschnaps/deps/rhino/js.jar
 CONFIG_APPLICATION_GENERATED = $(CONFIG_DIR)/application.generated.conf
@@ -118,15 +121,17 @@ endif
 .install-header:
 	##### Install #####
 
-install-dependencies: install-library-etl
+install-dependencies: install-node-modules install-library-etl
 
 install-library-etl: .install-folders
 	# Install etl library
 	@$(MAKE) -C $(LIB_ETL_DIR) install
 
 install-node-modules:
-	@#  Install node modules
-	@# @cd $(PATH_NODE_MODULES)/.. && $(NPM) install >/dev/null
+ifeq ($(SETUP_NODE_MODULES),1)
+	# Install node modules
+	@cd $(PATH_NODE_MODULES)/.. && $(NPM) install >/dev/null
+endif
 
 uninstall: uninstall-header uninstall-node-modules uninstall-dependencies
 
@@ -139,8 +144,10 @@ uninstall-library-etl:
 	@$(MAKE) -C $(LIB_ETL_DIR) uninstall
 
 uninstall-node-modules:
-	@# # Uninstall node modules
-	@# @rm -rf $(PATH_NODE_MODULES)
+ifeq ($(SETUP_NODE_MODULES),1)
+	# Uninstall node modules
+	@rm -rf $(PATH_NODE_MODULES)
+endif
 
 configure: .configure-head .configure-generate-main .configure-kettle .configure-database
 

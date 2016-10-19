@@ -75,7 +75,7 @@ var VersioningStorage = function(options)
             }
         }
         uncommitedCount = 0;
-        this.rollbackRowBackup(error);
+        return this.rollbackRowBackup(error);
     };
 
     var resultSetRowToObject = function(resultSet)

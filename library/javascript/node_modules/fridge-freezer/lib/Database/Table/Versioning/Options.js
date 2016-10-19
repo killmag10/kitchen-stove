@@ -34,37 +34,37 @@ Options.prototype.database = null;
 
 /**
  * Database schema if exists.
- * @type {[type]}
+ * @type {string}
  */
 Options.prototype.schema = null;
 
 /**
  * Table name.
- * @type {[type]}
+ * @type {string}
  */
 Options.prototype.table = null;
 
 /**
  * Commit size.
- * @type {Number}
+ * @type {number}
  */
 Options.prototype.commitSize = 100;
 
 /**
  * Purge not readed rows on the end.
- * @type {Boolean}
+ * @type {boolean}
  */
 Options.prototype.purge = false;
 
 /**
  * Additional purge condition
- * @type {[type]}
+ * @type {string}
  */
 Options.prototype.purgeWhere = null;
 
 /**
  * Console compatible logger.
- * @type {[type]}
+ * @type {console}
  */
 Options.prototype.logger = null;
 
