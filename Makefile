@@ -1,5 +1,8 @@
+
+
 MAKEFLAGS:= --warn-undefined-variables --no-print-directory $(MAKEFLAGS)
 VERBOSE?= 0
+CONTAINER_NAMESPACE := test
 
 # Commands
 MAKE := make
@@ -15,6 +18,8 @@ TRUE := true
 CAT := cat
 PASTE := paste
 NPM := npm
+DOCKER := docker
+
 
 ifneq ($(VERBOSE),0)
 WGET := wget
@@ -32,6 +37,8 @@ PACKAGE_PATH_MYSQL_CONNECTOR ?= $(DOWNLOAD_DIR)/mysql-connector.tar.gz
 # Mongo
 DOWNLOAD_URL_MONGO_DRIVER ?= http://files.dietrich-hosting.de/public/mongo/mongo-java-driver-2.12.4.jar
 PACKAGE_PATH_MONGO_DRIVER ?= $(DOWNLOAD_DIR)/mongo-java-driver.jar
+
+
 # Kettle
 ETL_KETTLE_PACKAGE_FILE ?= $(DOWNLOAD_DIR)/pentaho-kettle.download.tar.gz
 
@@ -210,3 +217,7 @@ else
 	# !!! NOT INSTALLED !!!
 	# Please run make install first.
 endif
+
+docker-image: configure
+	$(DOCKER) build -t $(CONTAINER_NAMESPACE) .
+# now docker run $(CONTAINER_NAMESPACE) /home/etl/bin/transformation Project/Test/simpleTest
