@@ -101,7 +101,7 @@ for param in ${ETL_ENV_VARS}; do
     ETL_KETTLE_GLOBAL_PARAMS[${#ETL_KETTLE_GLOBAL_PARAMS[@]}]="$param";
 done
 
-PENTAHO_DI_JAVA_OPTIONS='-Xmx'"$JAVAMAXMEM"'m -Dorg.eclipse.swt.browser.DefaultType=mozilla'
+PENTAHO_DI_JAVA_OPTIONS='-Xmx'"$JAVAMAXMEM"'m'
 for param in "${ETL_KETTLE_GLOBAL_PARAMS[@]}"; do
     PENTAHO_DI_JAVA_OPTIONS="$PENTAHO_DI_JAVA_OPTIONS -D$param";
 done

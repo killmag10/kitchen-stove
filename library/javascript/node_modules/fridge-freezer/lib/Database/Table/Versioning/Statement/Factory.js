@@ -2,8 +2,7 @@
 
 /**
  * Creates prepared statements.
- * @param  {[type]} options [description]
- * @return {[type]}         [description]
+ * @param  {Object} options [description]
  */
 var StatementFactory = function(options)
 {
@@ -18,7 +17,7 @@ var StatementFactory = function(options)
  * @param  {Function} sqlCallback       A callback to get the query.
  * @param  {Array} fieldsList           List of field names to set from row object.
  * @param  {Object} row                 The data row.
- * @return {java.sql.PreparedStatement}
+ * @return {java:java.sql.PreparedStatement}
  */
 StatementFactory.prototype.getStatement = function(database, sqlCallback, fieldsList, row)
 {

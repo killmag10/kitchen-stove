@@ -1,8 +1,9 @@
 var util = require('util');
 var events = require('events');
 
-var ApacheHttpClient = org.apache.commons.httpclient.HttpClient;
+var SlaveConnectionManager = org.pentaho.di.cluster.SlaveConnectionManager;
 
+var ApacheHttpClient = org.apache.commons.httpclient.HttpClient;
 var ApacheMethodGet = org.apache.commons.httpclient.methods.GetMethod;
 var ApacheMethodPost = org.apache.commons.httpclient.methods.PostMethod;
 var ApacheMethodPut = org.apache.commons.httpclient.methods.PutMethod;
@@ -58,7 +59,7 @@ Client.Params = require('./Client/Params.js');
 
 var request = function(client, params)
 {
-    var apacheHttpClient = new ApacheHttpClient()
+    var apacheHttpClient = SlaveConnectionManager.getInstance().createHttpClient();
 
     if (methods[params.method] === undefined) {
         throw new Error('Http method not found: ' + params.method)

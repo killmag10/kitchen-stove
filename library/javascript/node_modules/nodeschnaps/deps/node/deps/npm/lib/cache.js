@@ -10,9 +10,9 @@
 fetching a URL:
 1. Check for URL in inflight URLs.  If present, add cb, and return.
 2. Acquire lock at {cache}/{sha(url)}.lock
-   retries = {cache-lock-retries, def=3}
-   stale = {cache-lock-stale, def=30000}
-   wait = {cache-lock-wait, def=100}
+   retries = {cache-lock-retries, def=10}
+   stale = {cache-lock-stale, def=60000}
+   wait = {cache-lock-wait, def=10000}
 3. if lock can't be acquired, then fail
 4. fetch url, clear lock, call cbs
 
@@ -288,7 +288,7 @@ function add (args, where, cb) {
         break
       case "remote":
         // get auth, if possible
-        mapToRegistry(spec, npm.config, function (err, uri, auth) {
+        mapToRegistry(p.raw, npm.config, function (err, uri, auth) {
           if (err) return cb(err)
 
           addRemoteTarball(p.spec, {name : p.name}, null, auth, cb)
@@ -337,6 +337,7 @@ function afterAdd (cb) { return function (er, data) {
 
   // Save the resolved, shasum, etc. into the data so that the next
   // time we load from this cached data, we have all the same info.
+  // Ignore if it fails.
   var pj = path.join(cachedPackageRoot(data), "package", "package.json")
 
   var done = inflight(pj, cb)
@@ -347,7 +348,7 @@ function afterAdd (cb) { return function (er, data) {
     if (er) return done(er)
     writeFileAtomic(pj, JSON.stringify(data), {chown : cs}, function (er) {
       if (!er) log.verbose("afterAdd", pj, "written")
-      return done(er, data)
+      return done(null, data)
     })
   })
 }}

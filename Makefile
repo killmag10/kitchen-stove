@@ -52,7 +52,7 @@ TEMP_DIR := temp
 PATH_NODE_MODULES := $(LIB_DIR)/javascript/node_modules
 
 # Files
-JS_JAR_FILE = $(LIB_DIR)/javascript/node_modules/nodeschnaps/deps/rhino/js.jar
+JS_JAR_FILE = $(LIB_DIR)/javascript/node_modules/nodeschnaps/deps/rhino/lib/rhino-1.7.7.1.jar
 CONFIG_APPLICATION_GENERATED = $(CONFIG_DIR)/application.generated.conf
 
 # TOOLS

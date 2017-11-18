@@ -1,4 +1,3 @@
-
 module.exports = adduser
 
 var log = require("npmlog")
@@ -8,10 +7,11 @@ var log = require("npmlog")
   , crypto
 
 try {
-  crypto = process.binding("crypto") && require("crypto")
+  crypto = require("crypto")
 } catch (ex) {}
 
-adduser.usage = "npm adduser\nThen enter stuff at the prompts"
+adduser.usage = 'npm adduser [--registry=url] [--scope=@orgname] [--always-auth]' +
+                '\n\naliases: login'
 
 function adduser (args, cb) {
   npm.spinner.stop()
@@ -169,7 +169,9 @@ function save (c, u, cb) {
       })
     }
 
-    log.info("adduser", "Authorized user %s", u.u)
-    npm.config.save("user", cb)
+    log.info('adduser', 'Authorized user %s', u.u)
+    var scopeMessage = scope ? ' to scope ' + scope : ''
+    console.log('Logged in as %s%s on %s.', u.u, scopeMessage, uri)
+    npm.config.save('user', cb)
   })
 }

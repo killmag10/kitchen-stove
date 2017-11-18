@@ -15,7 +15,8 @@ var EventEmitter = require("events").EventEmitter
   , npm = module.exports = new EventEmitter()
   , npmconf = require("./config/core.js")
   , log = require("npmlog")
-  , fs = require("graceful-fs")
+  , gfs = require('graceful-fs')
+  , fs = gfs.gracefulify(require('fs'))
   , path = require("path")
   , abbrev = require("abbrev")
   , which = require("which")
@@ -112,6 +113,7 @@ var commandCache = {}
               , "unpublish"
               , "owner"
               , "access"
+              , "team"
               , "deprecate"
               , "shrinkwrap"
 
@@ -133,6 +135,7 @@ var commandCache = {}
               , "bin"
               , "whoami"
               , "dist-tag"
+              , "ping"
 
               , "test"
               , "stop"
@@ -147,7 +150,7 @@ var commandCache = {}
                , "substack"
                , "visnup"
                ]
-  , littleGuys = [ "isntall" ]
+  , littleGuys = [ "isntall", "verison" ]
   , fullList = cmdList.concat(aliasNames).filter(function (c) {
       return plumbing.indexOf(c) === -1
     })
@@ -280,8 +283,14 @@ npm.load = function (cli, cb_) {
     npm.config.loaded = true
     loaded = true
     loadCb(loadErr = er)
-    if (onload = onload && npm.config.get("onload-script")) {
-      require(onload)
+    onload = onload && npm.config.get('onload-script')
+    if (onload) {
+      try {
+        require(onload)
+      } catch (err) {
+        log.warn('onload-script', 'failed to require onload script', onload)
+        log.warn('onload-script', err)
+      }
       onload = false
     }
   }

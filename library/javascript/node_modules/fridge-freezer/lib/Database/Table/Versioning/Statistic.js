@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var RowStatus = require('./Row/Status');
 
@@ -6,10 +6,9 @@ var Statistic = function()
 {
     /**
      * org.pentaho.di.trans.step.BaseStep}
-     * @param  {[type]} step [description]
-     * @return {[type]}      [description]
+     * @param  {java:org.pentaho.di.trans.step.BaseStep} step
      */
-    this.setStep = function(step){
+    this.setStep = function(step) {
         this.step = step;
     };
 

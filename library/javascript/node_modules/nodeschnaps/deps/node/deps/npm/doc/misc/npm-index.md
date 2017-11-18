@@ -113,6 +113,10 @@ Manage package owners
 
 Create a tarball from a package
 
+### npm-ping(1)
+
+Ping npm registry
+
 ### npm-prefix(1)
 
 Display prefix
@@ -176,6 +180,10 @@ Stop a package
 ### npm-tag(1)
 
 Tag a published version
+
+### npm-team(1)
+
+Manage organization teams and team memberships
 
 ### npm-test(1)
 
@@ -284,6 +292,10 @@ Manage package owners
 ### npm-pack(3)
 
 Create a tarball from a package
+
+### npm-ping(3)
+
+Ping npm registry
 
 ### npm-prefix(3)
 
@@ -401,13 +413,13 @@ Developer Guide
 
 Handling Module Name Disputes
 
-### npm-faq(7)
-
-Frequently Asked Questions
-
 ### npm-index(7)
 
 Index of all npm documentation
+
+### npm-orgs(7)
+
+Working with Teams & Orgs
 
 ### npm-registry(7)
 

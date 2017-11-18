@@ -5,7 +5,6 @@ if (!global.setImmediate || !require('timers').setImmediate) {
     setTimeout.apply(this, args)
   }
 }
-
 var spawn = require('child_process').spawn
 var path = require('path')
 
@@ -18,12 +17,14 @@ process.env.npm_config_cache = exports.npm_config_cache = npm_config_cache
 process.env.npm_config_userconfig = exports.npm_config_userconfig = path.join(__dirname, 'fixtures', 'config', 'userconfig')
 process.env.npm_config_globalconfig = exports.npm_config_globalconfig = path.join(__dirname, 'fixtures', 'config', 'globalconfig')
 process.env.random_env_var = 'foo'
+// suppress warnings about using a prerelease version of node
+process.env.npm_config_node_version = process.version.replace(/-.*$/, '')
 
 var bin = exports.bin = require.resolve('../bin/npm-cli.js')
 var chain = require('slide').chain
 var once = require('once')
 
-exports.npm = function (cmd, opts, cb) {
+exports.npm = function npm (cmd, opts, cb) {
   cb = once(cb)
   cmd = [bin].concat(cmd)
   opts = opts || {}
@@ -58,7 +59,7 @@ exports.npm = function (cmd, opts, cb) {
   return child
 }
 
-exports.makeGitRepo = function (params, cb) {
+exports.makeGitRepo = function makeGitRepo (params, cb) {
   // git must be called after npm.load because it uses config
   var git = require('../lib/utils/git.js')
 
@@ -82,4 +83,15 @@ exports.makeGitRepo = function (params, cb) {
   }
 
   chain(commands, cb)
+}
+
+exports.rmFromInShrinkwrap = function rmFromInShrinkwrap (obj) {
+  for (var i in obj) {
+    if (i === "from")
+      delete obj[i]
+    else if (i === "dependencies")
+      for (var j in obj[i])
+        exports.rmFromInShrinkwrap(obj[i][j])
+  }
+  return obj
 }

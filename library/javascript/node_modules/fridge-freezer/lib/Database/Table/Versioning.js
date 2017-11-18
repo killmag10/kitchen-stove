@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var JavaDate = java.util.Date;
 var JavaInteger = java.lang.Integer;
@@ -17,8 +17,7 @@ var Compare = require('./Versioning/Compare');
  *
  * @param  {Options} options a Options object
  */
-var Versioning = function(options)
-{
+var Versioning = function(options) {
     var self = this;
 
     this.options = options;
@@ -39,13 +38,12 @@ var Versioning = function(options)
      * Write changes to the database.
      *
      * @param  {Object} row           the current data row
-     * @param  {[type]} compareResult
-     * @return {[type]}               [description]
+     * @param  {Object} compareResult
+     * @return {Object}
      */
-    this.updateDatabase = function(row, compareResult)
-    {
-        var status = compareResult['status'];
-        var version = compareResult['version'];
+    this.updateDatabase = function(row, compareResult) {
+        var status = compareResult.status;
+        var version = compareResult.version;
 
         row[options.fieldNames.version] = new JavaInteger(version);
         row[options.fieldNames.dateTo] = (options.dateTo === null) ? null : new JavaDate(options.dateTo);

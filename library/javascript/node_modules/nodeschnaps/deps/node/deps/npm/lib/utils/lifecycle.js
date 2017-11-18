@@ -39,8 +39,9 @@ function lifecycle (pkg, stage, wd, unsafe, failOk, cb) {
 
     unsafe = unsafe || npm.config.get("unsafe-perm")
 
-    if ((wd.indexOf(npm.dir) !== 0 || path.basename(wd) !== pkg.name)
-        && !unsafe && pkg.scripts[stage]) {
+    if ((wd.indexOf(npm.dir) !== 0 ||
+          wd.indexOf(pkg.name) !== wd.length - pkg.name.length) &&
+        !unsafe && pkg.scripts[stage]) {
       log.warn( "cannot run in wd", "%s %s (wd=%s)"
               , pkg._id, pkg.scripts[stage], wd)
       return cb()
@@ -81,6 +82,9 @@ function lifecycle_ (pkg, stage, wd, env, unsafe, failOk, cb) {
   // we also unshift the bundled node-gyp-bin folder so that
   // the bundled one will be used for installing things.
   pathArr.unshift(path.join(__dirname, "..", "..", "bin", "node-gyp-bin"))
+
+  // prefer current node interpreter in child scripts
+  pathArr.push(path.dirname(process.execPath))
 
   if (env[PATH]) pathArr.push(env[PATH])
   env[PATH] = pathArr.join(process.platform === "win32" ? ";" : ":")
@@ -195,12 +199,12 @@ function runCmd_ (cmd, pkg, env, wd, stage, unsafe, uid, gid, cb_) {
     conf.gid = gid ^ 0
   }
 
-  var sh = "sh"
-  var shFlag = "-c"
+  var sh = 'sh'
+  var shFlag = '-c'
 
-  if (process.platform === "win32") {
-    sh = process.env.comspec || "cmd"
-    shFlag = "/c"
+  if (process.platform === 'win32') {
+    sh = process.env.comspec || 'cmd'
+    shFlag = '/d /s /c'
     conf.windowsVerbatimArguments = true
   }
 
@@ -312,7 +316,9 @@ function makeEnv (data, prefix, env) {
     , verPref = data.name + "@" + data.version + ":"
 
   keys.forEach(function (i) {
-    if (i.charAt(0) === "_" && i.indexOf("_"+namePref) !== 0) {
+    // in some rare cases (e.g. working with nerf darts), there are segmented
+    // "private" (underscore-prefixed) config names -- don't export
+    if (i.charAt(0) === '_' && i.indexOf('_' + namePref) !== 0 || i.match(/:_/)) {
       return
     }
     var value = npm.config.get(i)
