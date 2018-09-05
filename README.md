@@ -25,7 +25,7 @@ Includes
 * BSD
 
 ## Requirements:
-* Java >= 7
+* Java >= 8
 * Make
 * Bash
 * NodeJS >= 12 (Only for Node Module installation)
