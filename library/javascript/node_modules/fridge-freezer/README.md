@@ -21,4 +21,7 @@ var module = require('fridge-freezer')('module/to/load');
   * System
     * [Properties](doc/Java/System/Properties.md)
 * Spoon
+  * Buffer
+    * [Fixed](doc/Spoon/Buffer/Fixed.md)
   * [Job](doc/Spoon/Job.md)
+  * [Distribute](doc/Spoon/Distribute.md)

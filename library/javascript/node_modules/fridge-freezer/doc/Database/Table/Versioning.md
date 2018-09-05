@@ -95,3 +95,17 @@ CREATE TABLE `test` (
   PRIMARY KEY (`id`,`version`)
 ) DEFAULT CHARSET=utf8;
 ```
+
+### Exmaple Rollback Callback
+```js
+versioning.setRollbackCallback(function(error, uncommitedRows) {
+    uncommitedRows.forEach(function(row) {
+        _step_.putError(
+            rowMeta,
+            Versioning.convertRowBack(row, rowMeta)
+        );
+    });
+
+    return true;
+});
+```

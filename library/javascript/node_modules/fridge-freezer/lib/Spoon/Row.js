@@ -11,7 +11,7 @@ Row.toJS = function(rowMeta, row, convert)
 {
     if (convert === undefined) convert = true;
 
-    var valueMetaList = rowMeta.getValuevalueMetaList().toArray();
+    var valueMetaList = rowMeta.getValueMetaList().toArray();
     var result = {};
 
     valueMetaList.forEach(function(meta, index) {

@@ -155,7 +155,7 @@ configure: .configure-head .configure-generate-main .configure-kettle .configure
 	##### Configure #####
 
 .configure-generate-main:
-	# Copy default application.conf if not exists.
+	# Copy default dist application.conf if not exists.
 	@$(TEST) -f $(CONFIG_DIR)/application.conf \
 		|| $(CP) \
 			$(CONFIG_DIR)/application.conf.dist \
