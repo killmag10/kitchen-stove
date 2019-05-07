@@ -32,10 +32,10 @@ USE_JDBC_CONFIG_GENERATOR := 1
 
 # Downloads
 # Mysql
-DOWNLOAD_URL_MYSQL_CONNECTOR ?= 'http://files.dietrich-hosting.de/public/mysql/mysql-connector-java-5.1.38.tar.gz'
+DOWNLOAD_URL_MYSQL_CONNECTOR ?= https://files.dietrich-hosting.de/public/mysql/mysql-connector-java-5.1.38.tar.gz
 PACKAGE_PATH_MYSQL_CONNECTOR ?= $(DOWNLOAD_DIR)/mysql-connector.tar.gz
 # Mongo
-DOWNLOAD_URL_MONGO_DRIVER ?= http://files.dietrich-hosting.de/public/mongo/mongo-java-driver-2.12.4.jar
+DOWNLOAD_URL_MONGO_DRIVER ?= https://files.dietrich-hosting.de/public/mongo/mongo-java-driver-2.12.4.jar
 PACKAGE_PATH_MONGO_DRIVER ?= $(DOWNLOAD_DIR)/mongo-java-driver.jar
 
 
@@ -49,10 +49,11 @@ CONFIG_DIR := config
 CONFIG_JDBC_FILE := $(CONFIG_DIR)/database/jdbc/jdbc.properties
 DOWNLOAD_DIR := download
 TEMP_DIR := temp
+LOG_DIR := log
 PATH_NODE_MODULES := $(LIB_DIR)/javascript/node_modules
 
 # Files
-JS_JAR_FILE = $(LIB_DIR)/javascript/node_modules/nodeschnaps/deps/rhino/lib/rhino-1.7.8.jar
+JS_JAR_FILE = $(LIB_DIR)/javascript/node_modules/nodeschnaps/deps/rhino/lib/rhino-1.7.9.jar
 CONFIG_APPLICATION_GENERATED = $(CONFIG_DIR)/application.generated.conf
 
 # TOOLS
@@ -81,6 +82,8 @@ IS_INSTALLED = $(shell $(TEST) -d $(LIB_ETL_DIR)/application/pentaho-kettle && p
 	@$(TEST) -d $(TEMP_DIR) || $(MKDIR) $(TEMP_DIR)
 	# Create download directory.
 	@$(TEST) -d $(DOWNLOAD_DIR) || $(MKDIR) $(DOWNLOAD_DIR)
+	# Create log directory.
+	@$(TEST) -d $(LOG_DIR) || $(MKDIR) $(LOG_DIR)
 
 .download-mysql-connector:
 	# Download Mysql-Connector from: $(DOWNLOAD_URL_MYSQL_CONNECTOR)
@@ -204,6 +207,8 @@ clean: clean-dependencies
 	@$(RM) -rf $(TEMP_DIR)
 	# Remove download directory.
 	@$(RM) -rf $(DOWNLOAD_DIR)
+	# Remove log directory.
+	@$(RM) -rf $(LOG_DIR)
 	@$(MAKE) .install-folders
 
 clean-dependencies:
