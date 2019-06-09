@@ -21,7 +21,7 @@ export ETL_LOG_DIR="$ETL_BIN_INCLUDE_DIR/../../log"
 export ETL_LIB_DIR="$ETL_BIN_INCLUDE_DIR/../../library/etl"
 export ETL_TMP_DIR="$ETL_BIN_INCLUDE_DIR/../../temp"
 export ETL_JNDI_ROOT="$ETL_BIN_INCLUDE_DIR/../../config/database/jdbc"
-export ETL_LOG_FILE="$ETL_LOG_DIR/etl.log"
+export ETL_LOG_FILE="/dev/null"
 
 export LIB_JAVASCRIPT_DIR="$ETL_BIN_INCLUDE_DIR/../../library/javascript"
 

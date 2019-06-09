@@ -32,10 +32,10 @@ USE_JDBC_CONFIG_GENERATOR := 1
 
 # Downloads
 # Mysql
-DOWNLOAD_URL_MYSQL_CONNECTOR ?= https://files.dietrich-hosting.de/public/mysql/mysql-connector-java-5.1.38.tar.gz
+DOWNLOAD_URL_MYSQL_CONNECTOR ?= https://files.dietrich-hosting.de/public/mysql/mysql-connector-java-8.0.16.tar.gz
 PACKAGE_PATH_MYSQL_CONNECTOR ?= $(DOWNLOAD_DIR)/mysql-connector.tar.gz
 # Mongo
-DOWNLOAD_URL_MONGO_DRIVER ?= https://files.dietrich-hosting.de/public/mongo/mongo-java-driver-2.12.4.jar
+DOWNLOAD_URL_MONGO_DRIVER ?= https://files.dietrich-hosting.de/public/mongo/mongodb-driver-3.10.1.jar
 PACKAGE_PATH_MONGO_DRIVER ?= $(DOWNLOAD_DIR)/mongo-java-driver.jar
 
 
@@ -98,7 +98,7 @@ IS_INSTALLED = $(shell $(TEST) -d $(LIB_ETL_DIR)/application/pentaho-kettle && p
 	# Install mysql connector.
 	@$(TAR) -xa --to-stdout --wildcards \
 		-f $(PACKAGE_PATH_MYSQL_CONNECTOR) \
-		'mysql-connector-java-*-bin.jar' \
+		'mysql-connector-java-*.jar' \
 		> $(LIB_ETL_DIR)/application/pentaho-kettle/lib/mysql-connector-java-bin.jar
 	# Install mongo driver.
 	@$(CP) $(PACKAGE_PATH_MONGO_DRIVER) \

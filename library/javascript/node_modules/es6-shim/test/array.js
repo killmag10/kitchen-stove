@@ -77,14 +77,10 @@ var runArrayTests = function (it) {
           expect(Array.from(arguments)).to.eql([0, 1, 2]);
         }(0, 1, 2));
 
-        expect(Array.from([null, undefined, 0.1248, -0, 0])).to.eql(
-          [null, undefined, 0.1248, -0, 0]
-        );
+        expect(Array.from([null, undefined, 0.1248, -0, 0])).to.eql([null, undefined, 0.1248, -0, 0]);
 
         if (Array.prototype.values) {
-          expect(Array.from([null, undefined, 0.1248, -0, 0].values())).to.eql(
-            [null, undefined, 0.1248, -0, 0]
-          );
+          expect(Array.from([null, undefined, 0.1248, -0, 0].values())).to.eql([null, undefined, 0.1248, -0, 0]);
         }
       });
 
@@ -235,16 +231,10 @@ var runArrayTests = function (it) {
       });
 
       it('removes holes', function () {
-        /*jshint elision: true */
-        /* jscs:disable disallowSpaceBeforeComma */
-        /* jscs:disable requireSpaceAfterComma */
         /* eslint-disable no-sparse-arrays */
         var input = [0, , 2];
         var result = Array.from([0, , 2]);
         /* eslint-enable no-sparse-arrays */
-        /* jscs:enable requireSpaceAfterComma */
-        /* jscs:enable disallowSpaceBeforeComma */
-        /*jshint elision: false */
         expect(1 in input).to.equal(false);
         expect(1 in result).to.equal(true);
         expect(result).to.eql([0, undefined, 2]);
@@ -260,7 +250,7 @@ var runArrayTests = function (it) {
         /* eslint no-extend-native: 0 */
         Object.defineProperty(Object.prototype, key, {
           configurable: true,
-          get: function () {},
+          get: function () {}, // eslint-disable-line getter-return
           set: function (v) { throw new EvalError('boom'); }
         });
         expect(function () {
@@ -391,14 +381,8 @@ var runArrayTests = function (it) {
       });
 
       it('should delete the target key if the source key is not present', function () {
-        /* jshint elision: true */
-        /* jscs:disable disallowSpaceBeforeComma */
-        /* jscs:disable requireSpaceAfterComma */
         /* eslint-disable no-sparse-arrays */
         expect([, 1, 2].copyWithin(1, 0)).to.eql([, , 1]);
-        /* jshint elision: false */
-        /* jscs:enable requireSpaceAfterComma */
-        /* jscs:enable disallowSpaceBeforeComma */
         /* eslint-enable no-sparse-arrays */
       });
 
@@ -479,15 +463,9 @@ var runArrayTests = function (it) {
       });
 
       it('should work with a sparse array', function () {
-        /*jshint elision: true */
-        /* jscs:disable disallowSpaceBeforeComma */
-        /* jscs:disable requireSpaceAfterComma */
         /* eslint-disable no-sparse-arrays */
         var obj = [1, , undefined];
         /* eslint-enable no-sparse-arrays */
-        /* jscs:enable requireSpaceAfterComma */
-        /* jscs:enable disallowSpaceBeforeComma */
-        /*jshint elision: false */
         expect(1 in obj).to.equal(false);
         var seen = [];
         var found = obj.find(function (item, idx) {
@@ -578,15 +556,9 @@ var runArrayTests = function (it) {
       });
 
       it('should work with a sparse array', function () {
-        /*jshint elision: true */
-        /* jscs:disable disallowSpaceBeforeComma */
-        /* jscs:disable requireSpaceAfterComma */
         /* eslint-disable no-sparse-arrays */
         var obj = [1, , undefined];
         /* eslint-enable no-sparse-arrays */
-        /* jscs:enable requireSpaceAfterComma */
-        /* jscs:enable disallowSpaceBeforeComma */
-        /*jshint elision: false */
         expect(1 in obj).to.equal(false);
         var seen = [];
         var foundIndex = obj.findIndex(function (item, idx) {
