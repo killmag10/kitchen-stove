@@ -82,7 +82,7 @@ getJdbcUrl() {
     local attributes="$5"
 
     if [ -z "$attributes" ]; then
-        attributes=`printf '%s' "$databaseAttributeDefaults" | sed -n 's#^database\.attribute\.defaults\.mysql\s*=\s*\(.\+\)\s*$#\1#p'`
+        attributes=`printf '%s' "$databaseAttributeDefaults" | sed -n 's#^database\.attribute\.defaults\.'"$1"'\s*=\s*\(.\+\)\s*$#\1#p'`
     fi
 
     case "$1" in
