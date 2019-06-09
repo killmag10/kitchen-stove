@@ -89,6 +89,9 @@ getJdbcUrl() {
         mysql)
             result="jdbc:mysql://${host}:${port}/${database}?${attributes}"
             ;;
+        mariadb)
+            result="jdbc:mariadb://${host}:${port}/${database}?${attributes}"
+            ;;
         *)
             return 1
             ;;
