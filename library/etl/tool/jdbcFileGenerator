@@ -54,6 +54,9 @@ getJavaDriver() {
         mysql)
             result='com.mysql.jdbc.Driver'
             ;;
+        mariadb)
+            result='org.mariadb.jdbc.Driver'
+            ;;
         *)
             return 1
             ;;

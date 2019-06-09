@@ -1,5 +1,3 @@
-
-
 MAKEFLAGS:= --warn-undefined-variables --no-print-directory $(MAKEFLAGS)
 VERBOSE?= 0
 CONTAINER_NAMESPACE := test
@@ -146,7 +144,7 @@ uninstall-header:
 uninstall-dependencies: uninstall-library-etl
 
 uninstall-library-etl:
-	@$(MAKE) -C $(LIB_ETL_DIR) uninstall
+	@$(TEST) ! -d $(LIB_ETL_DIR) || $(MAKE) -C $(LIB_ETL_DIR) uninstall
 
 uninstall-node-modules:
 	@# # Uninstall node modules
