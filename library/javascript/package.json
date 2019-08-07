@@ -11,7 +11,7 @@
     "lodash-node": "^2.4.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.25",
-    "nodeschnaps": "^0.11.0",
+    "nodeschnaps": "^0.12.0",
     "qunitjs": "^1.23.1",
     "semver": "^5.7.0",
     "twix": "^1.2.1"

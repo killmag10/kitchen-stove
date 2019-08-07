@@ -12,7 +12,7 @@ Includes
 ## Supported Platforms
 
 ### Kettle Versions:
-* 8.1.0 (Default)
+* 8.3.0 (Default)
 
 ### Operation Systems:
 * Linux
