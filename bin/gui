@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Fix for hanging java on exit.
+ulimit -c unlimited
+
 # Get the base dir.
 BASE_DIR=`printf '%s' "$BASH_SOURCE" | sed 's#/\?[^/]*$##' | sed 's#^./##'`;
 if [[ ! "$BASE_DIR" =~ ^/ ]]; then
