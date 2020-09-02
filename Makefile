@@ -17,6 +17,7 @@ CAT := cat
 PASTE := paste
 NPM := npm
 DOCKER := docker
+SED := sed
 
 
 ifneq ($(VERBOSE),0)
@@ -63,6 +64,7 @@ APPLICATION_ENV ?= development
 
 # Macros
 IS_INSTALLED = $(shell $(TEST) -d $(LIB_ETL_DIR)/application/pentaho-kettle && printf '1')
+IS_LIBGTK_3_INSTALLED = $(shell dpkg-query -s libgtk-3-0 > /dev/null && echo 1)
 
 .PHONY: \
 	.install-folders \
@@ -105,6 +107,10 @@ IS_INSTALLED = $(shell $(TEST) -d $(LIB_ETL_DIR)/application/pentaho-kettle && p
 	@$(RM) $(LIB_ETL_DIR)/application/pentaho-kettle/lib/js-*.jar
 	@$(CP) $(JS_JAR_FILE) \
 		$(LIB_ETL_DIR)/application/pentaho-kettle/lib/
+ifeq ($(IS_LIBGTK_3_INSTALLED),1)
+	# Fix SWT_GTK3
+	@${SED} -i 's/export SWT_GTK3=0$$/export SWT_GTK3=1/' $(LIB_ETL_DIR)/application/pentaho-kettle/spoon.sh
+endif
 
 # External targets
 all:
