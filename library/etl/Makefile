@@ -9,7 +9,7 @@ ETL_KETTLE_APPLICATION_DIR := $(ETL_LIB_APPLICATION_DIR)/pentaho-kettle
 VERBOSE?= 0
 
 # Set default package download path.
-ETL_KETTLE_DOWNLOAD_PATH?= https://files.dietrich-hosting.de/public/pentaho/kettle/pdi-ce-9.0.0.0-423.tar.gz
+ETL_KETTLE_DOWNLOAD_PATH?= https://files.dietrich-hosting.de/public/pentaho/9.1/pdi-ce-9.1.0.0-324.tar.gz
 
 # Set default package file path.
 ETL_KETTLE_PACKAGE_FILE?= $(ETL_LIB_APPLICATION_DIR)/pentaho-kettle.download.tar.gz
